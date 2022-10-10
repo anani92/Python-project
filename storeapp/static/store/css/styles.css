@@ -1,0 +1,27 @@
+.navbar-nav {
+  font-size: 1.5rem;
+}
+
+.dropdown {
+  font-size: 1.5rem;
+}
+#banner {
+  margin-top: 1rem;
+}
+.banner-img {
+  position: relative;
+  height: 40vh;
+  width: 90%;
+  margin: 0 5%;
+  z-index: 0;
+}
+
+.fa-shopping-cart {
+  font-size: 2rem;
+}
+
+.contacts a {
+  margin-top: 2rem;
+  font-size: 4rem;
+  color: black;
+}

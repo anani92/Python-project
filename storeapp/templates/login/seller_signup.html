@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sotre</title>
+    {% load static %}
+    <script src="{% static 'js/toggle.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'login/css/styles.css' %}" />
+  </head>
+  <body>
+    <section>
+      <div class="container">
+        <div class="user signinBx">
+          <div class="formBx">
+            <form action="/login" method="post">
+              {%csrf_token%}
+              <h2>Sign In</h2>
+              <input type="text" name="email" placeholder="Email" required />
+              <input
+                type="password"
+                name="password"
+                required
+                placeholder="Password"
+              />
+              <input type="submit" value="Login" />
+              <p class="signup">
+                Don't have an account ?
+                <a href="#" onclick="toggleForm();">Sign Up.</a>
+              </p>
+            </form>
+          </div>
+        </div>
+        <div class="user signupBx">
+          <div class="formBx">
+            <form action="/register" method="POST">
+              {%csrf_token%}
+              <h2>Create a Seller account</h2>
+              <input
+                type="text"
+                name="seller_first_name"
+                placeholder="first name"
+                required
+              />
+              <input
+                type="text"
+                name="seller_last_name"
+                placeholder="last name"
+                required
+              />
+              <input
+                type="text"
+                name="seller_company"
+                placeholder="Seller company"
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Create Password"
+                required
+              />
+              <input
+                type="password"
+                name="confirm_password"
+                placeholder="Confirm Password"
+                required
+              />
+              <input
+                type="phone"
+                name="seller_phone"
+                placeholder="Seller phone"
+                required
+              />
+              <input type="submit" value="Sign Up" />
+              <p class="signup">
+                Already have an account ?
+                <a href="#" onclick="toggleForm();">Sign in.</a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
