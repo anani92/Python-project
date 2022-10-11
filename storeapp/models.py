@@ -7,10 +7,11 @@ class User_Manager(models.Manager):
     def validate_user(self, request_data):
         errors = {}
         email = request_data.POST['email']
-        users = Customer.objects.filter(email=email)
-        if request_data.POST.get('first_name') and len(request_data.POST.get('first_name')) < 5:
+        users = Customer.objects.filter(
+            email=email)
+        if request_data.POST.get('first_name') and len(request_data.POST.get('first_name')) < 2:
             errors['first_name'] = 'first_name should be at least 2 letters'
-        if request_data.POST.get('last_name') and len(request_data.POST.get('last_name')) < 5:
+        if request_data.POST.get('last_name') and len(request_data.POST.get('last_name')) < 2:
             errors['last_name'] = 'last_name should be at least 2 letters'
         if len(request_data.POST['password']) < 8:
             errors["password"] = "The Password should be at least 8 characters"
@@ -34,7 +35,7 @@ class User_Manager(models.Manager):
         if not EMAIL_REGEX.match(email):
             errors['email'] = "Invalid email format"
 
-        if Customer:
+        if user:
             if bcrypt.checkpw(password.encode(), Customer[0].password.encode()) == False:
                 errors['password'] = 'username or password does not match'
         else:
@@ -47,14 +48,7 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=55)
     password = models.CharField(max_length=80)
     mobile = models.IntegerField()
-    created_at = models.DateField(auto_now=True)
-    updated_at = models.DateField(auto_now_add=True)
-
-
-class Customer_address(models.Model):
     address = models.TextField()
-    customer = models.ForeignKey(
-        Customer, related_name='address', on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
@@ -62,15 +56,16 @@ class Customer_address(models.Model):
 class Seller(models.Model):
     name = models.CharField(max_length=55)
     mobile = models.IntegerField()
+    description = models.TextField()
+    profile = models.ImageField()
+    city = models.CharField(max_length=55)
+    password = models.CharField(max_length=80)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
 
-class Seller_location(models.Model):
-    address = models.TextField()
-    city = models.CharField(max_length=55)
-    seller = models.ForeignKey(
-        Seller, related_name='locations', on_delete=models.CASCADE)
+class Product_category(models.Model):
+    name = models.CharField(max_length=55)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
@@ -78,10 +73,13 @@ class Seller_location(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=55)
     quantity = models.IntegerField()
-    category = models.CharField(max_length=55)
+    category = models.ForeignKey(
+        Product_category, related_name='products', on_delete=models.CASCADE)
+    description = models.TextField()
     seller = models.ManyToManyField(Seller, related_name='product')
     sale = models.FloatField(default=0.00)
     discount = models.BooleanField()
+    image = models.ImageField()
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
