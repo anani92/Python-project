@@ -113,13 +113,5 @@ def create_product(request):
     return redirect('/seller_profile')
 
 
-def register_customer(request):
-    return
-
-
-def register_seller(request):
-    return
-
-
 def seller_profile(request):
     return render(request, 'store/seller.html')
