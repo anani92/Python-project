@@ -25,3 +25,12 @@
   font-size: 4rem;
   color: black;
 }
+
+.card-img-top {
+  height: 5rem;
+  width: 5rem;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
