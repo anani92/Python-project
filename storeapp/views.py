@@ -1,61 +1,31 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
 from django.contrib import messages
-import bcrypt
-from storeapp.models import Customer, Seller, Order,  Product, Product_category
+from storeapp.models import Customer, Seller, Product, Product_category, Order
 from storeapp.models import Seller
-# Create your views here.
+from django.http import HttpResponseRedirect
+import bcrypt
 
 
 def home(request):
     # best_sellers = Product_category.objects.get(name='best sellers')
     # top_products = Product_category.objects.get(name='top products')
     # hot_offers = Product_category.objects.filter(Product.sale > 20)
-    all_product = Product.objects.all()
+    # all_product = Product.objects.all()
+    # request.session['cart'] = {}
+    # user = None
+    # if 'customer_id' in request.session:
+    #     user = Customer.objects.get(id=request.session['customer_id'])
+    # elif 'seller_id' in request.session:
+    #     user = Seller.objects.get(id=request.session['seller_id'])
     context = {
-        # 'best_seller': best_sellers.products.all(),
-        # 'top_products': top_products.products.all(),
-        # 'hot_offers': hot_offers.products.all(),
-        'all_product': all_product,
+        # # 'best_seller': best_sellers.products.all(),
+        # # 'top_products': top_products.products.all(),
+        # # 'hot_offers': hot_offers.products.all(),
+        # 'all_product': all_product,
+        'user': Customer.objects.get(id=request.session['customer_id'])
 
     }
     return render(request, 'store/home.html', context)
-
-
-def view_customer_login(request):
-    return render(request, 'login/login.html')
-
-
-def view_seller_login(request):
-    return render(request, 'login/seller_signup.html')
-
-
-def login_customer(request):
-    errors = Customer.objects.validate_login(request)
-    if len(errors) > 0:
-        for key, value in errors.items():
-            messages.error(request, value)
-        return redirect('/')
-    email = request.POST.get('email')
-    user = Customer.objects.filter(email=email)
-    if user:
-        request.session['cart'] = {}
-        request.session['customer'] = user[0]
-
-        return redirect(f'/customer')
-
-
-def login_seller(request):
-    errors = Seller.objects.validate_login(request)
-    if len(errors) > 0:
-        for key, value in errors.items():
-            messages.error(request, value)
-        return redirect('/')
-    email = request.POST.get('email')
-    seller = Seller.objects.filter(email=email)
-    if seller:
-        request.session['seller'] = seller[0]
-        return redirect(f'/seller')
 
 
 def create_customer(request):
@@ -71,22 +41,59 @@ def create_customer(request):
     email = request.POST.get('email')
     address = request.POST.get('address')
     password = request.POST.get('password')
-    bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+    password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
     customer = Customer.objects.create(
         first_name=first_name,
         last_name=last_name,
         mobile=mobile,
         email=email,
         address=address,
-        password=password
+        password=password_hash
     )
     customer.save()
-    request.session['customer'] = customer
-    return redirect('/seller_profile')
+    request.session['customer_id'] = customer.id
+    return redirect('/')
+
+
+def view_customer_login(request):
+    return render(request, 'login/login.html')
+
+
+def view_seller_login(request):
+    return render(request, 'login/seller_signup.html')
+
+
+def login_customer(request):
+    errors = Customer.objects.validate_user_login(request)
+    if len(errors) > 0:
+        print(errors)
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect('/login_customer')
+    email = request.POST.get('email')
+    user = Customer.objects.get(email=email)
+    request.session['cart'] = {}
+    request.session['customer_id'] = user.id
+    return redirect('/')
+
+
+def login_seller(request):
+    errors = Seller.objects.validate_seller_login(request)
+    if len(errors) > 0:
+        print(errors)
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect('/login_seller')
+    email = request.POST.get('name')
+    seller = Seller.objects.get(email=email)
+
+    print(seller)
+    request.session['seller_id'] = seller.id
+    return redirect('/seller')
 
 
 def create_seller(request):
-    errors = Seller.objects.validate_user(request)
+    errors = Seller.objects.validate_seller(request)
     if len(errors) > 0:
         for key, value in errors.items():
             messages.error(request, value)
@@ -98,55 +105,57 @@ def create_seller(request):
     description = request.POST.get('description')
     city = request.POST.get('city')
     password = request.POST.get('password')
-    password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+    password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
     new_seller = Seller.objects.create(
-        seller_name=seller_name,
+        name=seller_name,
         mobile=mobile,
         email=email,
         description=description,
         city=city,
-        password=password
+        password=password_hash
     )
     new_seller.save()
-    request.session['seller'] = new_seller
-    return redirect('/seller_profile')
+    request.session['seller_id'] = new_seller.id
+    return redirect('/seller')
 
 
 def create_product(request):
-    seller = request.session['seller']
-    category = request.post.get('category')
-    category = Product_category.objects.get(name=category)
-    seller = Seller.objecys.get(id=seller.id)
+    seller_id = request.session['seller_id']
+    seller = Seller.objects.get(id=seller_id)
+    category_id = request.POST.get('category')
+    category = Product_category.objects.get(id=category_id)
     name = request.POST.get('name')
     price = request.POST.get('price')
     quantity = request.POST.get('quantity')
-    category = Product_category.products.add()
     description = request.POST.get('description')
     sale = request.POST.get('sale')
     image = request.POST.get('image')
     new_product = Product.objects.create(
         name=name,
-        price=price,
         quantity=quantity,
         category=category,
         description=description,
+        price=price,
         sale=sale,
         image=image
     )
+    new_product.seller.add(seller)
     new_product.save()
-    return redirect('/seller_profile')
+
+    return redirect('/seller')
 
 
 def view_product(request, id):
     product = Product.objects.get(id=id)
     context = {
-        'product': product
+        'product': product,
+
     }
-    return render(request, 'store/product.html', product)
+    return render(request, 'store/product.html', context)
 
 
 def customer_profile(request):
-    customer = request.session['customer']
+    customer = Customer.objects.get(id=request.session['customer_id'])
     context = {
         'customer': customer
     }
@@ -154,9 +163,15 @@ def customer_profile(request):
 
 
 def seller_profile(request):
-    if request.session['seller']:
-        return render(request, 'store/seller.html')
-    return redirect('/login_seller')
+    seller = Seller.objects.get(id=request.session['seller_id'])
+    if 'seller_id' in request.session:
+        context = {
+            'seller': seller,
+            'categories': Product_category.objects.all()
+        }
+        return render(request, 'store/seller.html', context)
+    else:
+        return redirect('/login_seller')
 
 
 def show_cart(request):
@@ -190,3 +205,8 @@ def place_order(request):
 
 def about_page(request):
     return render(request, 'store/about.html')
+
+
+def logout(request):
+    request.session.clear()
+    return redirect('/')

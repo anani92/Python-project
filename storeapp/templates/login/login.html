@@ -14,7 +14,7 @@
       <div class="container">
         <div class="user signinBx">
           <div class="formBx">
-            <form action="/login_customer" method="post">
+            <form action="/customer_login" method="POST">
               {%csrf_token%}
               <h2>Sign In</h2>
               <p class="text-center text-secondary">
@@ -30,6 +30,7 @@
                 placeholder="Password"
               />
               <input type="submit" value="Login" />
+
               <p class="signup">
                 Don't have an account ?
                 <a href="#" onclick="toggleForm();">Sign Up.</a>
@@ -45,13 +46,13 @@
               <input
                 type="text"
                 name="first_name"
-                placeholder="firstname"
+                placeholder="first name"
                 required
               />
               <input
                 type="text"
                 name="last_name"
-                placeholder="last_name"
+                placeholder="last name"
                 required
               />
               <input
@@ -64,6 +65,14 @@
                 type="email"
                 name="email"
                 placeholder="Email Address"
+                required
+              />
+
+              <input
+                type="phone"
+                name="mobile"
+                placeholder="mobile"
+                placeholder="Mobile"
                 required
               />
               <input

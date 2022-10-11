@@ -34,7 +34,6 @@
                   <h1>my Store</h1>
                 </a>
               </div>
-
               <div class="col-md-4">
                 <form class="d-flex input-group w-auto my-auto mb-3 mb-md-0">
                   <input
@@ -48,23 +47,25 @@
                   ></span>
                 </form>
               </div>
-
               <div
                 class="col-md-4 d-flex justify-content-center justify-content-md-end align-items-center"
               >
                 <div class="d-flex">
                   <!-- Cart -->
-                  <a class="text-reset me-3" href="#">
+                  <a class="text-reset me-3" href="/cart">
                     <span><i class="fas fa-shopping-cart"></i></span>
                     <span
                       class="badge rounded-pill badge-notification bg-danger"
                       >1</span
                     >
                   </a>
-
                   <!-- User -->
                   <div class="dropdown">
+                    {%if user%}
                     <a href="/login_customer"><p>Log in</p> </a>
+                    {%else%}
+                    <a href="/logout"><p>logout</p> </a>
+                    {%endif%}
                   </div>
                 </div>
               </div>
@@ -102,7 +103,7 @@
                 <a class="nav-link" href="#">Inspirations</a>
               </li>
               <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block">
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" href="/about">About</a>
               </li>
               <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block">
                 <a class="nav-link" href="#">Contact</a>
@@ -115,7 +116,7 @@
           <!-- Container wrapper -->
         </nav>
       </div>
-
+      <h4>Welcome {{user.first_name}}</h4>
       <div id="banner" class="bg-success">
         <img
           src="{% static 'store/imgs/banner.jpg' %}"

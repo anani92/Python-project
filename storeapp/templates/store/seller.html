@@ -24,8 +24,8 @@
               <div
                 class="col-md-4 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0"
               >
-                <a href="#!" class="ms-md-2 text-success text-decoration-none"
-                  ><h1>MyStore</h1>
+                <a href="#!" class="ms-md-2 text-success text-decoration-none">
+                  <h1><i class="fas fa-h1 text-success"> MyStore</i></h1>
                 </a>
               </div>
 
@@ -122,23 +122,15 @@
         <div class="col-md-7">
           <div class="card p-3 py-4">
             <div class="text-center">
-              <img
-                src="{%static 'store/imgs/walmart-logo.jpg' %}"
-                width="200"
-              />
+              <img src="{{seller.image}}" width="200" />
             </div>
             <div class="text-center mt-3">
               <span class="bg-warning p-1 px-4 rounded text-white"
                 >1st Seller</span
               >
-              <h5 class="mt-2 mb-0">Walmart Store</h5>
+              <h5 class="mt-2 mb-0">{{seller.name}}</h5>
               <div class="px-4 mt-1">
-                <p class="fonts">
-                  Considered as one of the best store through the last 5 years,
-                  many people consider it as their favourite shopping
-                  destination because of the availability of most of their
-                  needs.
-                </p>
+                <p class="fonts">{{seller.description}}</p>
               </div>
             </div>
           </div>
@@ -148,7 +140,7 @@
     <h1 class="container text-center form_header my-5">Add New Product:</h1>
 
     <div class="d-flex justify-content-center mb-5 container col-8">
-      <form action="create" method="post" class="col-6 border p-3">
+      <form action="/create_product" method="post" class="col-6 border p-3">
         {% csrf_token %}
         <div class="input-group mb-3">
           <span class="input-group-text rounded col-1 text-center form_span"
@@ -159,11 +151,22 @@
 
         <div class="input-group mb-3">
           <span class="input-group-text col-1 rounded form_span">Price:</span>
-          <input type="number" class="form-control rounded" />
+          <input type="number" class="form-control rounded" name="price" />
           <span class="input-group-text rounded text-center form_span"
             >USD$</span
           >
         </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text col-1 rounded form_span"
+            >Quantity:</span
+          >
+          <input type="number" class="form-control rounded" name="quantity" />
+          <span class="input-group-text rounded text-center form_span"
+            >Items</span
+          >
+        </div>
+
         <div class="input-group mb-3">
           <span class="input-group-text rounded col-1 text-center form_span"
             >Sale:</span
@@ -183,8 +186,11 @@
           <select
             class="custom-select col-1 rounded form-control"
             name="category"
+            value="{{category.id}}"
           >
-            <option value="1">{Vegetables}</option>
+            {% for category in categories%}
+            <option value="{{category.id}}">{{category.name}}</option>
+            {%endfor%}
           </select>
         </div>
 
@@ -193,7 +199,7 @@
             >Image:</label
           >
           <label class="custom-file-upload form_label">
-            <input type="file" />
+            <input type="file" name="image" />
             <i class="fa fa-cloud-upload"></i>Click here tou upload image of the
             product.
           </label>
@@ -211,7 +217,7 @@
           ></textarea>
         </div>
         <div class="text-center">
-          <button type="submit" class="btn btn-success col-2 mx-auto mb-4">
+          <button type="submit" class="btn btn-outline-success mx-auto mb-4">
             Add
           </button>
         </div>
@@ -219,29 +225,20 @@
     </div>
     <h3 class="text text-center">Products:</h3>
     <div class="-md d-flex bg-light rounded container">
+      {% for item in seller.product.objects.all%}
       <div class="card col-2 m-4">
         <img
-          src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp"
+          src="{{item.image}}"
           class="card-img-top"
           alt="Fissure in Sandstone"
         />
         <div class="card-body text-center">
-          <h5 class="card-title text-center .text-nowrap">Product Name</h5>
+          <h5 class="card-title text-center .text-nowrap">{item.name}</h5>
+          <h5 class="card-title text-center .text-nowrap">{item.price}</h5>
           <a href="#!" class="btn btn-warning">Buy</a>
         </div>
       </div>
-
-      <div class="card col-2 m-4">
-        <img
-          src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp"
-          class="card-img-top"
-          alt="Fissure in Sandstone"
-        />
-        <div class="card-body text-center">
-          <h5 class="card-title text-center .text-nowrap">Product Name</h5>
-          <a href="#!" class="btn btn-warning text-center">Buy</a>
-        </div>
-      </div>
+      {%endfor%}
     </div>
     <footer>
       <div class="contacts contaienr d-flex justify-content-evenly my-5">
