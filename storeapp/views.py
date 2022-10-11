@@ -1,23 +1,22 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.contrib import messages
 import bcrypt
-from .models import Customer, Seller, Order,  Product, Product_category
+from storeapp.models import Customer, Seller, Order,  Product, Product_category
 from storeapp.models import Seller
 # Create your views here.
 
 
 def home(request):
-    best_sellers = Product_category.objects.get(name='best sellers')
-    top_products = Product_category.objects.get(name='top products')
-    hot_offers = Product_category.objects.filter(Product.sale > 20)
+    # best_sellers = Product_category.objects.get(name='best sellers')
+    # top_products = Product_category.objects.get(name='top products')
+    # hot_offers = Product_category.objects.filter(Product.sale > 20)
     all_product = Product.objects.all()
     context = {
-        'best_seller': best_sellers.products.all(),
-        'top_products': top_products.products.all(),
-        'hot_offers': hot_offers.products.all(),
-        'all_product': all_product.products.all(),
+        # 'best_seller': best_sellers.products.all(),
+        # 'top_products': top_products.products.all(),
+        # 'hot_offers': hot_offers.products.all(),
+        'all_product': all_product,
 
     }
     return render(request, 'store/home.html', context)
@@ -187,3 +186,7 @@ def place_order(request):
     new_order.save()
     customer.orders.add(new_order)
     return redirect('/customer_profile')
+
+
+def about_page(request):
+    return render(request, 'store/about.html')

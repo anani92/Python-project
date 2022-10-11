@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from storeapp import views
 
 
 urlpatterns = [
@@ -16,5 +16,6 @@ urlpatterns = [
     path('customer_profile', views.customer_profile),
     path('cart', views.show_cart),
     path('add_to_cart', views.add_to_cart),
-    path('place_order', views.place_order)
+    path('place_order', views.place_order),
+    path('about', views.about_page)
 ]
