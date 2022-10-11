@@ -127,6 +127,7 @@ def create_product(request):
     image = request.POST.get('image')
     new_product = Product.objects.create(
         name=name,
+        price=price,
         quantity=quantity,
         category=category,
         description=description,
