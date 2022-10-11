@@ -25,6 +25,7 @@
   font-size: 4rem;
   color: black;
 }
+
 .card-img-top {
   height: 5rem;
   width: 5rem;
@@ -33,18 +34,3 @@
   margin-left: auto;
   margin-right: auto;
 }
-
-
-/* .card {
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  border: none;
-  margin-top: 5rem;
-  margin-left: 10rem;
-  margin-right: 10rem;
-
-} */
-
-
-
