@@ -154,20 +154,31 @@
           <span class="input-group-text rounded col-1 text-center form_span"
             >Name:</span
           >
-          <input type="text" class="form-control rounded" name="title" />
+          <input type="text" class="form-control rounded" name="name" />
         </div>
 
         <div class="input-group mb-3">
           <span class="input-group-text col-1 rounded form_span">Price:</span>
-          <input type="text" class="form-control rounded" />
+          <input type="number" class="form-control rounded" />
           <span class="input-group-text rounded text-center form_span"
-            >USA $</span
+            >USD$</span
           >
         </div>
-
+        <div class="input-group mb-3">
+          <span class="input-group-text rounded col-1 text-center form_span"
+            >Sale:</span
+          >
+          <input
+            type="number"
+            class="form-control rounded"
+            name="sale"
+            min="0"
+            max="99"
+          />
+        </div>
         <div class="input-group mb-3">
           <label class="input-group-text col-1 rounded form_label"
-            >Options:</label
+            >Categories:</label
           >
           <select
             class="custom-select col-1 rounded form-control"

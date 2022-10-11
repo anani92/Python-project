@@ -47,8 +47,10 @@ class Customer(models.Model):
     first_name = models.CharField(max_length=55)
     last_name = models.CharField(max_length=55)
     password = models.CharField(max_length=80)
+    email = models.CharField(max_length=95)
     mobile = models.IntegerField()
     address = models.TextField()
+    objects = User_Manager()
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
@@ -60,6 +62,7 @@ class Seller(models.Model):
     profile = models.ImageField()
     city = models.CharField(max_length=55)
     password = models.CharField(max_length=80)
+    objects = User_Manager()
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
@@ -78,7 +81,6 @@ class Product(models.Model):
     description = models.TextField()
     seller = models.ManyToManyField(Seller, related_name='product')
     sale = models.FloatField(default=0.00)
-    discount = models.BooleanField()
     image = models.ImageField()
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
@@ -87,7 +89,7 @@ class Product(models.Model):
 class Order(models.Model):
     total = models.FloatField()
     customer = models.ForeignKey(
-        Customer, related_name='order', on_delete=models.CASCADE)
+        Customer, related_name='orders', on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
@@ -96,7 +98,5 @@ class Order_items(models.Model):
     product = models.ManyToManyField(
         Product, related_name='order_items')
     quantity = models.IntegerField()
-    order = models.OneToOneField(
-        Order, related_name='order_items', on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)

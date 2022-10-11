@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Store</title>
     {% load static %}
-    <script src="{% static 'js/toggle.js' %}"></script>
+    <script src="{% static 'login/js/toggle.js' %}"></script>
     <link rel="stylesheet" href="{% static 'login/css/styles.css' %}" />
   </head>
   <body>
@@ -14,9 +14,14 @@
       <div class="container">
         <div class="user signinBx">
           <div class="formBx">
-            <form action="/login" method="post">
+            <form action="/login_customer" method="post">
               {%csrf_token%}
               <h2>Sign In</h2>
+              <p class="text-center text-secondary">
+                <span class="text-sm text-left">
+                  Are you a seller? <a href="/login_seller">Signin</a> here
+                </span>
+              </p>
               <input type="text" name="email" placeholder="Email" required />
               <input
                 type="password"
@@ -34,7 +39,7 @@
         </div>
         <div class="user signupBx">
           <div class="formBx">
-            <form action="/register" method="POST">
+            <form action="/signup_customer" method="POST">
               {%csrf_token%}
               <h2>Create an account</h2>
               <input
@@ -47,6 +52,12 @@
                 type="text"
                 name="last_name"
                 placeholder="last_name"
+                required
+              />
+              <input
+                type="text"
+                name="address"
+                placeholder="Address"
                 required
               />
               <input
