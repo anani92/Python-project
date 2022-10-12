@@ -161,12 +161,16 @@ def view_product(request, id):
     return render(request, 'store/product.html', context)
 
 
+def view_seller_profile(request):
+    return
+
+
 def all_products(request):
     customer = Customer.objects.get(id=request.session['customer_id'])
     context = {
         'all_products': Product.objects.all()
     }
-    return render('store/all_products.html')
+    return render(request, 'store/sales.html', context)
 
 
 def customer_profile(request):

@@ -136,5 +136,5 @@ class Order_items(models.Model):
     updated_at = models.DateField(auto_now_add=True)
 
 
-class Cart(models.Model):
-    item = models.
+# class Cart(models.Model):
+#     item = models.
