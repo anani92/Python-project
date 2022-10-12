@@ -1,30 +1,40 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from platformdirs import user_cache_dir
 from storeapp.models import Customer, Seller, Product, Product_category, Order
 from storeapp.models import Seller
 from django.http import HttpResponseRedirect
 import bcrypt
 
 
-def home(request):
-    # best_sellers = Product_category.objects.get(name='best sellers')
-    # top_products = Product_category.objects.get(name='top products')
-    # hot_offers = Product_category.objects.filter(Product.sale > 20)
-    # all_product = Product.objects.all()
-    # request.session['cart'] = {}
-    # user = None
-    # if 'customer_id' in request.session:
-    #     user = Customer.objects.get(id=request.session['customer_id'])
-    # elif 'seller_id' in request.session:
-    #     user = Seller.objects.get(id=request.session['seller_id'])
-    context = {
-        # # 'best_seller': best_sellers.products.all(),
-        # # 'top_products': top_products.products.all(),
-        # # 'hot_offers': hot_offers.products.all(),
-        # 'all_product': all_product,
-        'user': Customer.objects.get(id=request.session['customer_id'])
+def index(request):
+    if 'cart' not in request.session:
+        request.session['cart'] = {}
+    return redirect('/home')
 
-    }
+
+def home(request):
+    context = {}
+    if 'seller_id' in request.session:
+        seller = Seller.objects.get(id=request.session['seller_id'])
+        if seller:
+            context = {
+                'seller': seller,
+                'products': Product.objects.all()
+            }
+    if 'customer_id' in request.session:
+        user = Customer.objects.get(id=request.session['customer_id'])
+        if user:
+            context = {
+                'user': user,
+                'products': Product.objects.all()
+            }
+    else:
+        context = {
+            'seller': None,
+            'user': None,
+            'products': Product.objects.all()
+        }
     return render(request, 'store/home.html', context)
 
 
@@ -71,9 +81,9 @@ def login_customer(request):
             messages.error(request, value)
         return redirect('/login_customer')
     email = request.POST.get('email')
-    user = Customer.objects.get(email=email)
+    customer = Customer.objects.get(email=email)
     request.session['cart'] = {}
-    request.session['customer_id'] = user.id
+    request.session['customer_id'] = customer.id
     return redirect('/')
 
 
@@ -84,10 +94,8 @@ def login_seller(request):
         for key, value in errors.items():
             messages.error(request, value)
         return redirect('/login_seller')
-    email = request.POST.get('name')
+    email = request.POST.get('email')
     seller = Seller.objects.get(email=email)
-
-    print(seller)
     request.session['seller_id'] = seller.id
     return redirect('/seller')
 
@@ -175,8 +183,10 @@ def seller_profile(request):
 
 
 def show_cart(request):
+
+    cart = request.session['cart']
     context = {
-        'cart': request.session['cart'],
+        'cart': cart,
     }
     return render(request, 'store/cart.html', context)
 
@@ -185,7 +195,7 @@ def add_to_cart(request, product_id):
     product = Product.objects.get(id=product_id)
     quantity = request.POST.get('quantity')
     request.session['cart'][quantity] = product
-    return HttpResponseRedirect(request.path_info)
+    return redirect(request.path_info)
 
 
 def place_order(request):
