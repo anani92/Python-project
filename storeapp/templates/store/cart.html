@@ -23,153 +23,228 @@
     <link rel="stylesheet" href="{% static 'store/css/styles.css' %}" />
 </head>
 <body>
-    <header>
-        <div class="bignav sticky-top">
-            <!-- Jumbotron -->
-            <div class="p-3 text-center bg-white border-bottom jumb sticky-top">
+
+<header class="container main_header" style="height: 180px;">
+    <div class="bignav fixed-top">
+    <!-- Jumbotron -->
+        <div class="p-3 text-center bg-white border-bottom jumb sticky-top">
             <div class="container">
-                <div class="row">
+            <div class="row">
                 <div class="col-md-4 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
-                    <a href="/" class="ms-md-2">
-                        <h1><i class="fas fa-h1 text-success"> MyStore</i></h1>
-                    </a>
+                <a href="#!" class="ms-md-2 text-success text-decoration-none">
+                    <h1>MyStore</h1>
+                </a>
                 </div>
-        
+
                 <div class="col-md-4">
-                    <form class="d-flex input-group w-auto my-auto mb-3 mb-md-0">
-                    <input autocomplete="off" type="search" class="form-control rounded" placeholder="Search" />
-                    <span class="input-group-text border-0 d-none d-lg-flex"><i class="fas fa-search"></i></span>
-                    </form>
+                <form class="d-flex input-group w-auto my-auto mb-3 mb-md-0">
+                    <input
+                    autocomplete="off"
+                    type="search"
+                    class="form-control rounded"
+                    placeholder="Search"
+                    />
+                    <span class="input-group-text border-0 d-none d-lg-flex"
+                    ><i class="fas fa-search"></i
+                    ></span>
+                </form>
                 </div>
-        
+
                 <div class="col-md-4 d-flex justify-content-center justify-content-md-end align-items-center">
-                    <div class="d-flex">
+                <div class="d-flex my-2">
                     <!-- Cart -->
                     <a class="text-reset me-3" href="#">
-                        <span><i class="fas fa-shopping-cart"></i></span>
-                        <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                    <span><i class="fas fa-shopping-cart"></i></span>
+                    <span class="badge rounded-pill badge-notification bg-danger">1</span>
                     </a>
+
                     <!-- User -->
-                    <div class="dropdown">
-                        <a  href="#"><p>Log in</p>
-                        </a>
-                        
-                    </div>
-                    </div>
+                    <a href="/login"  class="btn btn-outline-success btn-sm">Log out</a>
+                    <a href="/signup"  class="btn btn-success btn-sm mx-2 rounded-pill">My Account</a>
+
                 </div>
                 </div>
             </div>
             </div>
-            <!-- Jumbotron -->
-        
-            <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
-            <!-- Container wrapper -->
-            <div class="container justify-content-center justify-content-md-between">
-                <!-- Left links -->
-                <ul class="navbar-nav flex-row">
-                <li class="nav-item me-2 me-lg-0">
-                    <a class="nav-link" href="#" role="button" data-mdb-toggle="sidenav" data-mdb-target="#sidenav-1"
-                    class="btn shadow-0 p-0 me-3" aria-controls="#sidenav-1" aria-haspopup="true">
-                    <i class="fas fa-bars me-1"></i>
-                    <span>Categories</span>
-                    </a>
-                </li>
-                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block">
-                    <a class="nav-link" href="#">Bestsellers</a>
-                </li>
-                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block">
-                    <a class="nav-link" href="#">Inspirations</a>
-                </li>
-                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-                </ul>
-                <!-- Left links -->
-        
-                <button class="btn btn-outline-primary" data-mdb-ripple-color="dark" type="button">
-                Download app<i class="fas fa-download ms-2"></i>
-                </button>
-            </div>
-            <!-- Container wrapper -->
-            </nav>
         </div>
-        <section class="h-100 bg-light">
-                <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-12">
-                    <div class="card card-registration card-registration-2" style="border-radius: 15px;">
-                        <div class="card-body p-0">
-                        <div class="row g-0">
-                            <div class="col-lg-8">
-                            <div class="p-5">
-                                <div class="d-flex justify-content-between align-items-center mb-5">
-                                <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
-                                <h6 class="mb-0 text-muted"> items</h6>
-                                </div>
-                                <hr class="my-4">
-                                <div class="row mb-4 d-flex justify-content-between align-items-center">
-                                <div class="col-md-2 col-lg-2 col-xl-2">
-                                    <img
-                                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img7.webp"
-                                    class="img-fluid rounded-3" alt="Cotton T-shirt">
-                                </div>
-                                <div class="col-md-3 col-lg-3 col-xl-3">
-                                    <h6 class="text-muted">Shirt</h6>
-                                    <h6 class="text-black mb-0">Cotton T-shirt</h6>
-                                </div>
-                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                    <input type="number" name="item_quantity"  class="w-100">
-                                </div>
-                                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                    <h6 class="mb-0">€ 44.00</h6>
-                                </div>
-                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                    <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
-                                </div>
-                                </div>
-            
-                                <hr class="my-4">
-            
-                            </div>
-                            </div>
-                            <div class="col-lg-4 bg-grey">
-                            <div class="p-5">
-                                <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
-                                <hr class="my-4">
-            
-                                <div class="d-flex justify-content-between mb-4">
-                                <h5 class="text-uppercase">items </h5>
-                                <h5></h5>
-                                </div>
-            
-                                <h5 class="text-uppercase mb-3">Shipping</h5>
-            
-                                <div class="mb-4 pb-2">
-                                <select class="select">
-                                    <option value="1">Standard-Delivery- €5.00</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                    <option value="4">Four</option>
-                                </select>
-                                </div>
-                                <hr class="my-4">
-                                <div class="d-flex justify-content-between mb-5">
-                                <h5 class="text-uppercase">Total price</h5>
-                                <h5>€ </h5>
-                                </div>
-                                <button type="button" class="btn btn-dark btn-block btn-lg"
-                                data-mdb-ripple-color="dark">Buy</button>
-                            </div>
-                            </div>
+        <!-- Jumbotron -->
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top border-bottom">
+            <!-- Container wrapper -->
+            <div class="container justify-content-center justify-content-around">
+            <!-- Left links -->
+            <ul class="navbar-nav flex-row font-weight-bold">
+                <li class="nav-item dropdown">
+                    <span class="btn btn-outline-success dropdown-toggle font-weight-bold" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</span>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">All Products</a>
+                    <hr class="dropdown-divider">
+                    <a class="dropdown-item" href="#">Vegetables</a>
+                    <a class="dropdown-item" href="#">Fruit</a>
+                    </div>
+                </li>
+                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                <a class="nav-link" href="#">Bestsellers</a>
+                </li>`
+                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                <a class="nav-link" href="#">Sales</a>
+                </li>
+                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-5 ">
+                <a class="nav-link btn btn-warning font-weight-bold" href="/seller_signup">Seller Account</a>
+                </li>
+            </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+
+
+<section class="h-100 bg-light">
+        <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+            <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                <div class="card-body p-0">
+                <div class="row g-0">
+                    <div class="col-lg-8">
+                    <div class="p-5">
+                        <div class="d-flex justify-content-between align-items-center mb-5">
+                        <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                        <h6 class="mb-0 text-muted"> items</h6>
+                        </div>
+                        <hr class="my-4">
+                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                        <div class="col-md-2 col-lg-2 col-xl-2">
+                            <img
+                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img7.webp"
+                            class="img-fluid rounded-3" alt="Cotton T-shirt">
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-xl-3">
+                            <h6 class="text-muted">Shirt</h6>
+                            <h6 class="text-black mb-0">Cotton T-shirt</h6>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                            <input type="number" name="item_quantity"  class="w-100">
+                        </div>
+                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                            <h6 class="mb-0">€ 44.00</h6>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                            <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
                         </div>
                         </div>
+    
+                        <hr class="my-4">
+    
+                    </div>
+                    </div>
+                    <div class="col-lg-4 bg-grey">
+                    <div class="p-5">
+                        <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                        <hr class="my-4">
+    
+                        <div class="d-flex justify-content-between mb-4">
+                        <h5 class="text-uppercase">items </h5>
+                        <h5></h5>
+                        </div>
+    
+                        <h5 class="text-uppercase mb-3">Shipping</h5>
+    
+                        <div class="mb-4 pb-2">
+                        <select class="select">
+                            <option value="1">Standard-Delivery- €5.00</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                            <option value="4">Four</option>
+                        </select>
+                        </div>
+                        <hr class="my-4">
+                        <div class="d-flex justify-content-between mb-5">
+                        <h5 class="text-uppercase">Total price</h5>
+                        <h5>€ </h5>
+                        </div>
+                        <button type="button" class="btn btn-dark btn-block btn-lg"
+                        data-mdb-ripple-color="dark">Buy</button>
                     </div>
                     </div>
                 </div>
                 </div>
-            </section>
-    </body>
-    </html>
+            </div>
+            </div>
+        </div>
+        </div>
+</section>
+
+
+<!-- footer -->
+<footer class="bg-light text-center text-white col-10 container">
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+        <!-- Section: Social media -->
+        <section class="mb-1">
+        <h3 class="text-black">Contact Us:</h3>
+        <!-- Facebook -->
+        <a
+            class="btn text-white btn-floating m-1"
+            style="background-color: #3b5998;"
+            href="#!"
+            role="button"
+            ><i class="fab fa-facebook-f"></i
+        ></a>
+    
+        <!-- Twitter -->
+        <a
+            class="btn text-white btn-floating m-1"
+            style="background-color: #55acee;"
+            href="#!"
+            role="button"
+            ><i class="fab fa-twitter"></i
+        ></a>
+    
+
+        <!-- Instagram -->
+        <a
+            class="btn text-white btn-floating m-1"
+            style="background-color: #ac2bac;"
+            href="#!"
+            role="button"
+            ><i class="fab fa-instagram"></i
+        ></a>
+    
+        <!-- Linkedin -->
+        <a
+            class="btn text-white btn-floating m-1"
+            style="background-color: #0082ca;"
+            href="#!"
+            role="button"
+            ><i class="fab fa-linkedin-in"></i
+        ></a>
+
+        </section>
+        <!-- Section: Social media -->
+    </div>
+    <!-- Grid container -->
+    
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2022 Copyright:
+        <a class="text-white" href="https://mdbootstrap.com/">MyStore.com</a>
+    </div>
+    <!-- Copyright -->
+</footer>
+<!-- end footer -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/27d8b168ea.js" crossorigin="anonymous"></script>
+</body>
+</html>
