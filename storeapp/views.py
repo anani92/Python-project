@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from platformdirs import user_cache_dir
 from storeapp.models import Customer, Seller, Product, Product_category, Order
 from storeapp.models import Seller
 from django.http import HttpResponseRedirect
@@ -161,13 +160,13 @@ def view_product(request, id):
     }
     return render(request, 'store/product.html', context)
 
-
+###
 def all_products(request):
     customer = Customer.objects.get(id=request.session['customer_id'])
     context = {
         'all_products': Product.objects.all()
     }
-    return render('store/all_products.html')
+    return render(request,'store/all_products.html',context)
 
 
 def customer_profile(request):
