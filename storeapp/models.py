@@ -116,7 +116,7 @@ class Product(models.Model):
     seller = models.ManyToManyField(
         Seller, related_name='product')
     sale = models.FloatField(default=0.00)
-    image = models.ImageField(null=True, blank=True, upload_to ='media/')
+    image = models.ImageField(null=True, blank=True, upload_to='media/')
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
@@ -132,6 +132,9 @@ class Order(models.Model):
 class Order_items(models.Model):
     product = models.ManyToManyField(
         Product, related_name='order_items')
-    quantity = models.IntegerField()
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
+
+
+class Cart(models.Model):
+    item = models.

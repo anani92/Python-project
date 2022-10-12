@@ -15,17 +15,17 @@
     />
   </head>
   <body>
-    <header>
-      <div class="bignav sticky-top">
+    <header class="container main_header" style="height: 220px">
+      <div class="bignav fixed-top">
         <!-- Jumbotron -->
-        <div class="p-3 text-center bg-white border-bottom jumb sticky-top">
+        <div class="p-3 text-center bg-white border-bottom">
           <div class="container">
             <div class="row">
               <div
                 class="col-md-4 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0"
               >
                 <a href="#!" class="ms-md-2 text-success text-decoration-none">
-                  <h1><i class="fas fa-h1 text-success"> MyStore</i></h1>
+                  <h1>MyStore</h1>
                 </a>
               </div>
 
@@ -46,9 +46,9 @@
               <div
                 class="col-md-4 d-flex justify-content-center justify-content-md-end align-items-center"
               >
-                <div class="d-flex">
+                <div class="d-flex my-2">
                   <!-- Cart -->
-                  <a class="text-reset me-3" href="#">
+                  <a class="text-reset me-3" href="/cart">
                     <span><i class="fas fa-shopping-cart"></i></span>
                     <span
                       class="badge rounded-pill badge-notification bg-danger"
@@ -57,9 +57,14 @@
                   </a>
 
                   <!-- User -->
-                  <div class="dropdown">
-                    <a href="#"><p>Log in</p> </a>
-                  </div>
+                  {%if user or seller%}
+                  <a href="/logout" class="btn btn-outline-success btn-sm">
+                    Logout
+                  </a>
+                  {%else%}
+                  <a href="/login_customer" class="btn btn-success btn-sm mx-2"
+                    >login</a
+                  >{%endif%}
                 </div>
               </div>
             </div>
@@ -67,56 +72,64 @@
         </div>
         <!-- Jumbotron -->
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <nav
+          class="navbar navbar-expand-lg navbar-light bg-white sticky-top border-bottom"
+        >
           <!-- Container wrapper -->
-          <div
-            class="container justify-content-center justify-content-md-between"
-          >
+          <div class="container justify-content-center justify-content-around">
             <!-- Left links -->
-            <ul class="navbar-nav flex-row">
-              <li class="nav-item me-2 me-lg-0">
-                <a
-                  class="nav-link"
-                  href="#"
-                  role="button"
-                  data-mdb-toggle="sidenav"
-                  data-mdb-target="#sidenav-1"
-                  class="btn shadow-0 p-0 me-3"
-                  aria-controls="#sidenav-1"
+            <ul class="navbar-nav flex-row font-weight-bold">
+              <li class="nav-item dropdown">
+                <span
+                  class="btn btn-outline-success dropdown-toggle font-weight-bold"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
                   aria-haspopup="true"
+                  aria-expanded="false"
+                  >Categories</span
                 >
-                  <i class="fas fa-bars me-1"></i>
-                  <span>Categories</span>
-                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">All Products</a>
+                  <hr class="dropdown-divider" />
+                  <a class="dropdown-item" href="#">Vegetables</a>
+                  <a class="dropdown-item" href="#">Fruit</a>
+                </div>
               </li>
-              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block">
+              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
                 <a class="nav-link" href="#">Bestsellers</a>
               </li>
-              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block">
-                <a class="nav-link" href="#">Inspirations</a>
+              `
+              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                <a class="nav-link" href="#">Sales</a>
               </li>
-              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block">
-                <a class="nav-link" href="#">About</a>
+              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                <a class="nav-link" href="/about">About</a>
               </li>
-              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block">
-                <a class="nav-link" href="#">Contact</a>
+              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                <a class="nav-link" href="#contact">Contact</a>
+              </li>
+              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-5">
+                {% if request.session.seller_id %}
+                <a
+                  class="nav-link btn btn-warning font-weight-bold"
+                  href="/seller"
+                >
+                  Seller Account
+                </a>
+                {%else%}
+                <a
+                  class="nav-link btn btn-warning font-weight-bold"
+                  href="/login_seller"
+                >
+                  Sell
+                </a>
+                {%endif%}
               </li>
             </ul>
-            <!-- Left links -->
-
-            <button
-              class="btn btn-outline-primary"
-              data-mdb-ripple-color="dark"
-              type="button"
-            >
-              Download app<i class="fas fa-download ms-2"></i>
-            </button>
           </div>
-          <!-- Container wrapper -->
         </nav>
       </div>
     </header>
-
     <div class="container mt-5">
       <div class="row d-flex justify-content-center">
         <div class="col-md-7">
