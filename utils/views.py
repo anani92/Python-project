@@ -1,4 +1,3 @@
-from django.shortcuts import render
 
 # Create your views here.
 from decimal import Decimal
@@ -17,20 +16,18 @@ class Cart(object):
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
-    def add(self, product, quantity=1, update_quantity=False):
+    def add(self, product, quantity=1):
         product_id = str(product.id)
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0,
                                      'price': str(product.price)}
-        # if update_quantity:
-        #     self.cart[product_id]['quantity'] = quantity
-        # else:
-        self.cart[product_id]['quantity'] += quantity
+            self.cart[product_id]['quantity'] = quantity
+        else:
+            self.cart[product_id]['quantity'] += int(quantity)
         self.save()
 
     def save(self):
         self.session[settings.CART_SESSION_ID] = self.cart
-        self.session.modified = True
 
     def remove(self, product):
         product_id = str(product.id)

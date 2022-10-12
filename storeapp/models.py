@@ -1,4 +1,3 @@
-from email.policy import default
 from django.db import models
 import re
 import bcrypt
@@ -138,8 +137,8 @@ class Product(models.Model):
 #     created_at = models.DateField(auto_now=True)
 #     updated_at = models.DateField(auto_now_add=True)
 class Order_item(models.Model):
-    product = models.ManyToManyField(
-        Product, related_name='order_items')
+    product = models.ForeignKey(
+        Product, related_name='order_item', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
@@ -148,8 +147,15 @@ class Order_item(models.Model):
 class Order(models.Model):
     total = models.FloatField()
     items = models.ManyToManyField(
-        Order_item, related_name='cart', null=True, blank=True)
+        Product, related_name='Order')
     customer = models.ForeignKey(
         Customer, related_name='orders', on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
+
+class UploadImage(models.Model):  
+    caption = models.CharField(max_length=200)  
+    image = models.ImageField(upload_to='images')  
+  
+    def __str__(self):  
+        return self.caption  

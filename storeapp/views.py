@@ -2,23 +2,23 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from storeapp.models import Customer, Seller, Product, Product_category, Order
 from storeapp.models import Seller
-from django.contrib.auth.decorators import login_required
 import bcrypt
 from utils.views import Cart
 
 
 def index(request):
-    if 'cart' not in request.session:
-        request.session['cart'] = {}
+    
     return redirect('/home')
 
 
 def home(request):
     context = {}
+    cart = Cart()
     if 'seller_id' in request.session:
         seller = Seller.objects.get(id=request.session['seller_id'])
         if seller:
             context = {
+                'cart': cart,
                 'seller': seller,
                 'products': Product.objects.all()
             }
@@ -26,11 +26,13 @@ def home(request):
         user = Customer.objects.get(id=request.session['customer_id'])
         if user:
             context = {
+                'cart': cart,
                 'user': user,
                 'products': Product.objects.all()
             }
     else:
         context = {
+            'cart': cart,
             'seller': None,
             'user': None,
             'products': Product.objects.all()
@@ -198,13 +200,14 @@ def seller_profile(request):
 
 
 # @login_required(login_url="/login/login")
-def add_to_cart(request, id):
+def add_to_cart(request):
+    product_id = request.POST.get('product_id')
     quantity = request.POST.get('quantity')
+    product = Product.objects.get(id=product_id)
+    print(product.name , 'hello')
     cart = Cart(request)
-    product = Product.objects.get(id=id)
     cart.add(product, quantity)
-
-    return redirect(request.path)
+    return redirect(f'/view_product/{product_id}')
 
 
 # @login_required(login_url="/login/login")
