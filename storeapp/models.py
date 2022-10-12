@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 import re
 import bcrypt
@@ -121,20 +122,34 @@ class Product(models.Model):
     updated_at = models.DateField(auto_now_add=True)
 
 
+# class Cart_item(models.Model):
+#     product = models.ForeignKey(Product)
+#     quantity = models.IntegerField(default=1)
+#     created_at = models.DateField(auto_now=True)
+#     updated_at = models.DateField(auto_now_add=True)
+
+
+# class Cart(models.Model):
+#     items = models.ManyToManyField(
+#         Cart_item, related_name='cart', null=True, blank=True)
+#     products = models.ManyToManyField(
+#         Product, related_name='cart')
+#     total = models.DecimalField()
+#     created_at = models.DateField(auto_now=True)
+#     updated_at = models.DateField(auto_now_add=True)
+class Order_item(models.Model):
+    product = models.ManyToManyField(
+        Product, related_name='order_items')
+    quantity = models.IntegerField(default=1)
+    created_at = models.DateField(auto_now=True)
+    updated_at = models.DateField(auto_now_add=True)
+
+
 class Order(models.Model):
     total = models.FloatField()
+    items = models.ManyToManyField(
+        Order_item, related_name='cart', null=True, blank=True)
     customer = models.ForeignKey(
         Customer, related_name='orders', on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
-
-
-class Order_items(models.Model):
-    product = models.ManyToManyField(
-        Product, related_name='order_items')
-    created_at = models.DateField(auto_now=True)
-    updated_at = models.DateField(auto_now_add=True)
-
-
-# class Cart(models.Model):
-#     item = models.
