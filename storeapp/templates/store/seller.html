@@ -140,7 +140,12 @@
     <h1 class="container text-center form_header my-5">Add New Product:</h1>
 
     <div class="d-flex justify-content-center mb-5 container col-8">
-      <form action="/create_product" method="post" class="col-6 border p-3">
+      <form
+        action="/create_product"
+        enctype="multipart/form-data"
+        method="post"
+        class="col-6 border p-3"
+      >
         {% csrf_token %}
         <div class="input-group mb-3">
           <span class="input-group-text rounded col-1 text-center form_span"
@@ -224,17 +229,25 @@
       </form>
     </div>
     <h3 class="text text-center">Products:</h3>
-    <div class="-md d-flex bg-light rounded container">
-      {% for item in seller.product.objects.all%}
+    <div class="-md d-flex bg-light rounded container flex-wrap">
+      {% for item in seller.product.all%}
       <div class="card col-2 m-4">
+        {% if item.image%}
         <img
-          src="{{item.image}}"
+          src="{{ item.image.url }}"
           class="card-img-top"
-          alt="Fissure in Sandstone"
+          alt="{{item.name}}"
         />
+        {{ item.image.url }} {%else%}
+        <img
+          src="{% static 'store/imgs/default_product.png' %}"
+          class="card-img-top"
+          alt="{{item.name}}"
+        />
+        {%endif%}
         <div class="card-body text-center">
-          <h5 class="card-title text-center .text-nowrap">{item.name}</h5>
-          <h5 class="card-title text-center .text-nowrap">{item.price}</h5>
+          <h5 class="card-title text-center .text-nowrap">{{item.name}}</h5>
+          <h5 class="card-title text-center .text-nowrap">{{item.price}}</h5>
           <a href="#!" class="btn btn-warning">Buy</a>
         </div>
       </div>

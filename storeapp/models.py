@@ -116,7 +116,7 @@ class Product(models.Model):
     seller = models.ManyToManyField(
         Seller, related_name='product')
     sale = models.FloatField(default=0.00)
-    image = models.ImageField()
+    image = models.ImageField(null=True, blank=True, upload_to ='media/')
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
