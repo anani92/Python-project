@@ -253,15 +253,16 @@ def show_cart(request):
 
 # @login_required
 def place_order(request):
-    cart = request.session['cart']
-    customer = request.session['customer']
-    total = [quantity * product.price for quantity, product in cart.items()]
+    cart = Cart(request)
+    customer_id = request.session['customer'] 
+    customer = Customer.objects.get(id=customer_id)
+    total = cart.get_total_price()
     new_order = Order.objects.create(
         customer=customer,
         total=sum(total),
     )
-    for item in cart:
-        new_order.order_items.add(item)
+    order_items = iter(cart)
+    new_order.order_items.add(item for item in order_items)
     new_order.save()
     customer.orders.add(new_order)
     return redirect('/customer_profile')
