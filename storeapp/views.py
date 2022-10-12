@@ -162,6 +162,14 @@ def view_product(request, id):
     return render(request, 'store/product.html', context)
 
 
+def all_products(request):
+    customer = Customer.objects.get(id=request.session['customer_id'])
+    context = {
+        'all_products': Product.objects.all()
+    }
+    return render('store/all_products.html')
+
+
 def customer_profile(request):
     customer = Customer.objects.get(id=request.session['customer_id'])
     context = {
