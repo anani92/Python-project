@@ -92,7 +92,6 @@ class Seller(models.Model):
     mobile = models.IntegerField()
     email = models.CharField(max_length=95)
     description = models.TextField()
-    # profile_pic = models.ImageField()
     city = models.CharField(max_length=55)
     password = models.CharField(max_length=80)
     created_at = models.DateField(auto_now=True)
@@ -116,26 +115,12 @@ class Product(models.Model):
     seller = models.ManyToManyField(
         Seller, related_name='product')
     sale = models.FloatField(default=0.00)
-    image = models.ImageField(null=True, blank=True, upload_to='media/')
+    image = models.ImageField(upload_to='images', null=True, blank=True)  
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
 
-# class Cart_item(models.Model):
-#     product = models.ForeignKey(Product)
-#     quantity = models.IntegerField(default=1)
-#     created_at = models.DateField(auto_now=True)
-#     updated_at = models.DateField(auto_now_add=True)
 
-
-# class Cart(models.Model):
-#     items = models.ManyToManyField(
-#         Cart_item, related_name='cart', null=True, blank=True)
-#     products = models.ManyToManyField(
-#         Product, related_name='cart')
-#     total = models.DecimalField()
-#     created_at = models.DateField(auto_now=True)
-#     updated_at = models.DateField(auto_now_add=True)
 class Order_item(models.Model):
     product = models.ForeignKey(
         Product, related_name='order_item', on_delete=models.CASCADE)
@@ -153,9 +138,12 @@ class Order(models.Model):
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
-class UploadImage(models.Model):  
-    caption = models.CharField(max_length=200)  
-    image = models.ImageField(upload_to='images')  
-  
-    def __str__(self):  
-        return self.caption  
+
+
+class Seller_Image(models.Model):
+    title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='images')
+    seller = models.ForeignKey(Seller, related_name='profile_pic', on_delete=models.CASCADE)
+    def __str__(self):
+        return self.title
+    

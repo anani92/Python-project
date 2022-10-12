@@ -5,7 +5,6 @@ from storeapp.models import Seller
 import bcrypt
 from utils.views import Cart
 
-
 def index(request):
     
     return redirect('/home')
@@ -13,7 +12,7 @@ def index(request):
 
 def home(request):
     context = {}
-    cart = Cart()
+    cart = Cart(request)
     if 'seller_id' in request.session:
         seller = Seller.objects.get(id=request.session['seller_id'])
         if seller:
@@ -188,8 +187,8 @@ def customer_profile(request):
 
 
 def seller_profile(request):
-    seller = Seller.objects.get(id=request.session['seller_id'])
     if 'seller_id' in request.session:
+        seller = Seller.objects.get(id=request.session['seller_id'])
         context = {
             'seller': seller,
             'categories': Product_category.objects.all()
