@@ -24,86 +24,121 @@
 </head>
 <body>
 
-    <header class="container main_header" style="height: 180px;">
+    <header class="container main_header" style="height: 220px">
         <div class="bignav fixed-top">
-        <!-- Jumbotron -->
-            <div class="p-3 text-center bg-white border-bottom jumb sticky-top">
-                <div class="container">
-                <div class="row">
-                    <div class="col-md-4 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
-                    <a href="#!" class="ms-md-2 text-success text-decoration-none">
-                        <h1>MyStore</h1>
+          <!-- Jumbotron -->
+          <div class="p-3 text-center bg-white border-bottom">
+            <div class="container">
+              <div class="row">
+                <div
+                  class="col-md-4 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0"
+                >
+                  <a href="#!" class="ms-md-2 text-success text-decoration-none">
+                    <h1>MyStore</h1>
+                  </a>
+                </div>
+  
+                <div class="col-md-4">
+                  <form class="d-flex input-group w-auto my-auto mb-3 mb-md-0">
+                    <input
+                      autocomplete="off"
+                      type="search"
+                      class="form-control rounded"
+                      placeholder="Search"
+                    />
+                    <span class="input-group-text border-0 d-none d-lg-flex"
+                      ><i class="fas fa-search"></i
+                    ></span>
+                  </form>
+                </div>
+  
+                <div
+                  class="col-md-4 d-flex justify-content-center justify-content-md-end align-items-center"
+                >
+                  <div class="d-flex my-2">
+                    <!-- Cart -->
+                    <a class="text-reset me-3" href="/cart">
+                      <span><i class="fas fa-shopping-cart"></i></span>
+                      <span
+                        class="badge rounded-pill badge-notification bg-danger"
+                        >1</span
+                      >
                     </a>
-                    </div>
-    
-                    <div class="col-md-4">
-                    <form class="d-flex input-group w-auto my-auto mb-3 mb-md-0">
-                        <input
-                        autocomplete="off"
-                        type="search"
-                        class="form-control rounded"
-                        placeholder="Search"
-                        />
-                        <span class="input-group-text border-0 d-none d-lg-flex"
-                        ><i class="fas fa-search"></i
-                        ></span>
-                    </form>
-                    </div>
-    
-                    <div class="col-md-4 d-flex justify-content-center justify-content-md-end align-items-center">
-                    <div class="d-flex my-2">
-                        <!-- Cart -->
-                        <a class="text-reset me-3" href="#">
-                        <span><i class="fas fa-shopping-cart"></i></span>
-                        <span class="badge rounded-pill badge-notification bg-danger">1</span>
-                        </a>
-    
-                        <!-- User -->
-                        <a href="/login"  class="btn btn-outline-success btn-sm">Log out</a>
-                        <a href="/signup"  class="btn btn-success btn-sm mx-2 rounded-pill">My Account</a>
-    
-                    </div>
-                    </div>
+  
+                    <!-- User -->
+                    {%if user or seller%}
+                    <a href="/logout" class="btn btn-outline-success btn-sm">
+                      Logout
+                    </a>
+                    {%else%}
+                    <a href="/login_customer" class="btn btn-success btn-sm mx-2"
+                      >login</a
+                    >{%endif%}
+                  </div>
                 </div>
-                </div>
+              </div>
             </div>
-            <!-- Jumbotron -->
-    
-            <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top border-bottom">
-                <!-- Container wrapper -->
-                <div class="container justify-content-center justify-content-around">
-                <!-- Left links -->
-                <ul class="navbar-nav flex-row font-weight-bold">
-                    <li class="nav-item dropdown">
-                        <span class="btn btn-outline-success dropdown-toggle font-weight-bold" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</span>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">All Products</a>
-                        <hr class="dropdown-divider">
-                        <a class="dropdown-item" href="#">Vegetables</a>
-                        <a class="dropdown-item" href="#">Fruit</a>
-                        </div>
-                    </li>
-                    <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
-                    <a class="nav-link" href="#">Bestsellers</a>
-                    </li>`
-                    <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
-                    <a class="nav-link" href="#">Sales</a>
-                    </li>
-                    <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
-                    <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
-                    <a class="nav-link" href="#">Contact</a>
-                    </li>
-                    <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-5 ">
-                    <a class="nav-link btn btn-warning font-weight-bold" href="/seller_signup">Seller Account</a>
-                    </li>
-                </ul>
-                </div>
-            </nav>
+          </div>
+          <!-- Jumbotron -->
+  
+          <nav
+            class="navbar navbar-expand-lg navbar-light bg-white sticky-top border-bottom"
+          >
+            <!-- Container wrapper -->
+            <div class="container justify-content-center justify-content-around">
+              <!-- Left links -->
+              <ul class="navbar-nav flex-row font-weight-bold">
+                <li class="nav-item dropdown">
+                  <span
+                    class="btn btn-outline-success dropdown-toggle font-weight-bold"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    >Categories</span
+                  >
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/all_products">All Products</a>
+                    <hr class="dropdown-divider" />
+                    <a class="dropdown-item" href="#">Vegetables</a>
+                    <a class="dropdown-item" href="#">Fruit</a>
+                  </div>
+                </li>
+                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                  <a class="nav-link" href="#">Bestsellers</a>
+                </li>
+                `
+                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                  <a class="nav-link" href="#">Sales</a>
+                </li>
+                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                  <a class="nav-link" href="/about">About</a>
+                </li>
+                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                  <a class="nav-link" href="#contact">Contact</a>
+                </li>
+                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-5">
+                  {% if request.session.seller_id %}
+                  <a
+                    class="nav-link btn btn-warning font-weight-bold"
+                    href="/seller"
+                  >
+                    Seller Account
+                  </a>
+                  {%else%}
+                  <a
+                    class="nav-link btn btn-warning font-weight-bold"
+                    href="/login_seller"
+                  >
+                    Sell
+                  </a>
+                  {%endif%}
+                </li>
+              </ul>
+            </div>
+          </nav>
         </div>
-    </header>
-
+      </header>
 
 
     <section style="background-color: #eee;">
