@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from platformdirs import user_cache_dir
 from storeapp.models import Customer, Seller, Product, Product_category, Order
 from storeapp.models import Seller
 from django.http import HttpResponseRedirect
