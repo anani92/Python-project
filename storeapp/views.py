@@ -148,7 +148,6 @@ def create_product(request):
     )
     new_product.seller.add(seller)
     new_product.save()
-
     return redirect('/seller')
 
 
@@ -156,24 +155,28 @@ def view_product(request, id):
     product = Product.objects.get(id=id)
     context = {
         'product': product,
-
     }
     return render(request, 'store/product.html', context)
 
-###
+
 def all_products(request):
-    customer = Customer.objects.get(id=request.session['customer_id'])
+    if ('customer_id' not in request.session)and ('seller_id' not in request.session):
+        return redirect('/login_customer')
+    # customer = Customer.objects.get(id=request.session['customer_id'])
     context = {
         'all_products': Product.objects.all()
     }
-    return render(request,'store/all_products.html',context)
+    return render(request, 'store/all_products.html', context)
 
 
 def customer_profile(request):
+    if ('customer_id' not in request.session)and ('seller_id' not in request.session):
+        return redirect('/login_customer')
     customer = Customer.objects.get(id=request.session['customer_id'])
     context = {
         'customer': customer
     }
+    print(customer)
     return render(request, 'store/customer.html', context)
 
 
@@ -190,7 +193,8 @@ def seller_profile(request):
 
 
 def show_cart(request):
-
+    if 'customer_id' not in request.session:
+        return redirect('/login_customer')
     cart = request.session['cart']
     context = {
         'cart': cart,

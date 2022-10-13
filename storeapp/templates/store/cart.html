@@ -1,119 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/all.min.css" />
-    <link rel="stylesheet" href="css/style.css" />
-    <script
-        src="https://kit.fontawesome.com/27d8b168ea.js"
-        crossorigin="anonymous"
-    ></script>
-    <!-- CSS only -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyStore</title>
+
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-        crossorigin="anonymous"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
     />
     {% load static %}
-    <link rel="stylesheet" href="{% static 'store/css/styles.css' %}" />
-</head>
-<body>
-
-<header class="container main_header" style="height: 180px;">
-    <div class="bignav fixed-top">
-    <!-- Jumbotron -->
-        <div class="p-3 text-center bg-white border-bottom jumb sticky-top">
-            <div class="container">
+    <link rel="stylesheet" href="{% static 'store/css/home.css' %}" />
+  </head>
+  <body>
+    <header class="container main_header" style="height: 220px">
+      <div class="bignav fixed-top">
+        <!-- Jumbotron -->
+        <div class="p-3 text-center bg-white border-bottom">
+          <div class="container">
             <div class="row">
-                <div class="col-md-4 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
-                <a href="#!" class="ms-md-2 text-success text-decoration-none">
-                    <h1>MyStore</h1>
+              <div class="col-md-4 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
+                <a href="/" class="ms-md-2 text-success text-decoration-none">
+                  <h1>MyStore</h1>
                 </a>
-                </div>
-
-                <div class="col-md-4">
+              </div>
+              <div class="col-md-4">
                 <form class="d-flex input-group w-auto my-auto mb-3 mb-md-0">
-                    <input
+                  <input
                     autocomplete="off"
                     type="search"
                     class="form-control rounded"
-                    placeholder="Search"
-                    />
-                    <span class="input-group-text border-0 d-none d-lg-flex"
-                    ><i class="fas fa-search"></i
-                    ></span>
+                    placeholder="Search"/>
+                  <span class="input-group-text border-0 d-none d-lg-flex"><i class="fas fa-search"></i></span>
                 </form>
-                </div>
+              </div>
 
-                <div class="col-md-4 d-flex justify-content-center justify-content-md-end align-items-center">
+              <div class="col-md-4 d-flex justify-content-center justify-content-md-end align-items-center">
                 <div class="d-flex my-2">
-                    <!-- Cart -->
-                    <a class="text-reset me-3" href="#">
+                  <!-- Cart -->
+                  <a class="text-reset me-3" href="/cart">
                     <span><i class="fas fa-shopping-cart"></i></span>
-                    <span class="badge rounded-pill badge-notification bg-danger">1</span>
-                    </a>
-
-                    <!-- User -->
-                    <a href="/login"  class="btn btn-outline-success btn-sm">Log out</a>
-                    <a href="/signup"  class="btn btn-success btn-sm mx-2 rounded-pill">My Account</a>
-
+                    <span class="badge rounded-pill badge-notification bg-danger">0</span>
+                  </a>
+                  <!-- User -->
+                  {%if user or seller%}
+                  <a href="/logout" class="btn btn-outline-success btn-sm">Log out</a>
+                  {%else%}
+                  <a href="/login_customer" class="btn btn-success btn-sm mx-2">login</a>
+                  {%endif%}
+                  <!-- My account -->
+                  {% if request.session.seller_id %}
+                  <a class="btn btn-success btn-sm mx-2 rounded-pill" href="/seller">My Account</a>
+                  {%else%}
+                  <a class="btn btn-success btn-sm mx-2 rounded-pill" href="/customer_profile">My Account</a>
+                  {%endif%} 
                 </div>
-                </div>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
         <!-- Jumbotron -->
 
         <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top border-bottom">
-            <!-- Container wrapper -->
-            <div class="container justify-content-center justify-content-around">
+          <!-- Container wrapper -->
+          <div class="container justify-content-center justify-content-around">
             <!-- Left links -->
             <ul class="navbar-nav flex-row font-weight-bold">
-                <li class="nav-item dropdown">
-                    <span class="btn btn-outline-success dropdown-toggle font-weight-bold" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</span>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">All Products</a>
-                    <hr class="dropdown-divider">
-                    <a class="dropdown-item" href="#">Vegetables</a>
-                    <a class="dropdown-item" href="#">Fruit</a>
-                    </div>
-                </li>
-                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+              <li class="nav-item dropdown">
+                <span
+                  class="btn btn-outline-success dropdown-toggle font-weight-bold"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  >Categories</span>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="/all_products">All Products</a>
+                  <hr class="dropdown-divider" />
+                  <a class="dropdown-item" href="#">Vegetables</a>
+                  <a class="dropdown-item" href="#">Fruit</a>
+                </div>
+              </li>
+              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
                 <a class="nav-link" href="#">Bestsellers</a>
-                </li>`
-                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
-                <a class="nav-link" href="#">Sales</a>
-                </li>
-                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
-                <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
-                <a class="nav-link" href="#">Contact</a>
-                </li>
-                <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-5 ">
-                <a class="nav-link btn btn-warning font-weight-bold" href="/seller_signup">Seller Account</a>
-                </li>
+              </li>`
+              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                <a class="nav-link" href="/all_products">Sales</a>
+              </li>
+              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                <a class="nav-link" href="/about">About</a>
+              </li>
+              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
+                <a class="nav-link" href="/#contact">Contact</a>
+              </li> 
             </ul>
-            </div>
+          </div>
         </nav>
-    </div>
-</header>
+      </div>
+    </header>
 
-
-<section class="h-100 bg-light">
+    <section class="h-100 bg-light">
         <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12">
-            <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+              <div class="card card-registration card-registration-2" style="border-radius: 15px;">
                 <div class="card-body p-0">
-                <div class="row g-0">
+                  <div class="row g-0">
                     <div class="col-lg-8">
-                    <div class="p-5">
+                      <div class="p-5">
                         <div class="d-flex justify-content-between align-items-center mb-5">
                         <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
                         <h6 class="mb-0 text-muted"> items</h6>
@@ -139,23 +142,18 @@
                             <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
                         </div>
                         </div>
-    
                         <hr class="my-4">
-    
-                    </div>
+                      </div>
                     </div>
                     <div class="col-lg-4 bg-grey">
-                    <div class="p-5">
+                      <div class="p-5">
                         <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
                         <hr class="my-4">
-    
                         <div class="d-flex justify-content-between mb-4">
                         <h5 class="text-uppercase">items </h5>
                         <h5></h5>
-                        </div>
-    
-                        <h5 class="text-uppercase mb-3">Shipping</h5>
-    
+                        </div>   
+                        <h5 class="text-uppercase mb-3">Shipping</h5>   
                         <div class="mb-4 pb-2">
                         <select class="select">
                             <option value="1">Standard-Delivery- €5.00</option>
@@ -171,75 +169,56 @@
                         </div>
                         <button type="button" class="btn btn-dark btn-block btn-lg"
                         data-mdb-ripple-color="dark">Buy</button>
+                      </div>
                     </div>
-                    </div>
+                  </div>
                 </div>
-                </div>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
+    </section>
+
+
+    <!-- footer -->
+    <footer class="bg-light text-center text-white col-10 container">
+        <!-- Grid container -->
+        <div class="container p-4 pb-0">
+            <!-- Section: Social media -->
+            <section class="mb-1">
+            <h3 class="text-black">Contact Us:</h3>
+            <a
+                class="btn text-white btn-floating m-1"
+                style="background-color: #3b5998;"
+                href="#!"
+                role="button"
+                ><i class="fab fa-facebook-f"></i></a>
+            <a
+                class="btn text-white btn-floating m-1"
+                style="background-color: #55acee;"
+                href="#!"
+                role="button"
+                ><i class="fab fa-twitter"></i></a>
+            <a
+                class="btn text-white btn-floating m-1"
+                style="background-color: #ac2bac;"
+                href="#!"
+                role="button"
+                ><i class="fab fa-instagram"></i></a>
+            <a
+                class="btn text-white btn-floating m-1"
+                style="background-color: #0082ca;"
+                href="#!"
+                role="button"
+                ><i class="fab fa-linkedin-in"></i></a>
+            </section>
         </div>
-</section>
-
-
-<!-- footer -->
-<footer class="bg-light text-center text-white col-10 container">
-    <!-- Grid container -->
-    <div class="container p-4 pb-0">
-        <!-- Section: Social media -->
-        <section class="mb-1">
-        <h3 class="text-black">Contact Us:</h3>
-        <!-- Facebook -->
-        <a
-            class="btn text-white btn-floating m-1"
-            style="background-color: #3b5998;"
-            href="#!"
-            role="button"
-            ><i class="fab fa-facebook-f"></i
-        ></a>
-    
-        <!-- Twitter -->
-        <a
-            class="btn text-white btn-floating m-1"
-            style="background-color: #55acee;"
-            href="#!"
-            role="button"
-            ><i class="fab fa-twitter"></i
-        ></a>
-    
-
-        <!-- Instagram -->
-        <a
-            class="btn text-white btn-floating m-1"
-            style="background-color: #ac2bac;"
-            href="#!"
-            role="button"
-            ><i class="fab fa-instagram"></i
-        ></a>
-    
-        <!-- Linkedin -->
-        <a
-            class="btn text-white btn-floating m-1"
-            style="background-color: #0082ca;"
-            href="#!"
-            role="button"
-            ><i class="fab fa-linkedin-in"></i
-        ></a>
-
-        </section>
-        <!-- Section: Social media -->
-    </div>
-    <!-- Grid container -->
-    
-    <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2022 Copyright:
-        <a class="text-white" href="https://mdbootstrap.com/">MyStore.com</a>
-    </div>
-    <!-- Copyright -->
-</footer>
-<!-- end footer -->
-
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2022 Copyright:
+            <a class="text-white" href="https://mdbootstrap.com/">MyStore.com</a>
+        </div>
+    </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
