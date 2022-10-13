@@ -4,8 +4,7 @@ __init__.py
 migrations
 __pycache__
 *.pyc
-sqlite3
-**/__pycache__
+db.sqlite3
 
 *.py[cod]
 
