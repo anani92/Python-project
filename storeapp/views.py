@@ -159,6 +159,10 @@ def view_product(request, id):
     return render(request, 'store/product.html', context)
 
 
+def view_seller_profile(request):
+    return
+
+
 def all_products(request):
     if ('customer_id' not in request.session)and ('seller_id' not in request.session):
         return redirect('/login_customer')
@@ -166,7 +170,11 @@ def all_products(request):
     context = {
         'all_products': Product.objects.all()
     }
+<<<<<<< HEAD
     return render(request, 'store/all_products.html', context)
+=======
+    return render(request, 'store/sales.html', context)
+>>>>>>> a5871b579f028ad83c456ce65952a765b3549085
 
 
 def customer_profile(request):

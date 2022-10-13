@@ -136,3 +136,8 @@ class Order_items(models.Model):
     updated_at = models.DateField(auto_now_add=True)
 
 
+<<<<<<< HEAD
+=======
+# class Cart(models.Model):
+#     item = models.
+>>>>>>> a5871b579f028ad83c456ce65952a765b3549085

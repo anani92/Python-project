@@ -10,7 +10,6 @@
 section {
   position: relative;
   min-height: 100vh;
-  background-color: #293845dc;
   display: flex;
   justify-content: center;
   align-items: center;
