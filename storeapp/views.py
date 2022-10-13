@@ -13,12 +13,12 @@ def index(request):
 
 def home(request):
     context = {}
-    cart = Cart()
+    # cart = Cart()
     if 'seller_id' in request.session:
         seller = Seller.objects.get(id=request.session['seller_id'])
         if seller:
             context = {
-                'cart': cart,
+                # 'cart': cart,
                 'seller': seller,
                 'products': Product.objects.all()
             }
@@ -26,13 +26,13 @@ def home(request):
         user = Customer.objects.get(id=request.session['customer_id'])
         if user:
             context = {
-                'cart': cart,
+                # 'cart': cart,
                 'user': user,
                 'products': Product.objects.all()
             }
     else:
         context = {
-            'cart': cart,
+            # 'cart': cart,
             'seller': None,
             'user': None,
             'products': Product.objects.all()
@@ -266,6 +266,7 @@ def place_order(request):
     new_order.save()
     customer.orders.add(new_order)
     return redirect('/customer_profile')
+
 
 
 def about_page(request):
