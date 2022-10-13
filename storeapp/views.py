@@ -171,10 +171,8 @@ def view_seller_profile(request, id):
 
 
 def all_products(request):
-    customer = Customer.objects.get(id=request.session['customer_id'])
     context = {
         'all_products': Product.objects.all(),
-        'customer': customer,
     }
     return render(request, 'store/all_products.html', context)
 

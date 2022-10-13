@@ -2,9 +2,8 @@
 venv
 __init__.py
 migrations
-**/__pycache__
 *.pyc
-sqlite3
+*.sqlite3
 __pycache__/
 
 *.py[cod]
