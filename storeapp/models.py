@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 import re
 import bcrypt
@@ -92,6 +93,7 @@ class Seller(models.Model):
     mobile = models.IntegerField()
     email = models.CharField(max_length=95)
     description = models.TextField()
+    # profile_pic = models.ImageField()
     city = models.CharField(max_length=55)
     password = models.CharField(max_length=80)
     created_at = models.DateField(auto_now=True)
@@ -115,35 +117,24 @@ class Product(models.Model):
     seller = models.ManyToManyField(
         Seller, related_name='product')
     sale = models.FloatField(default=0.00)
-    image = models.ImageField(upload_to='images', null=True, blank=True)  
+    image = models.ImageField(null=True, blank=True, upload_to='media/')
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
 
-
 class Order_item(models.Model):
     product = models.ForeignKey(
-        Product, related_name='order_item', on_delete=models.CASCADE)
+        Product, related_name='order_item')
     quantity = models.IntegerField(default=1)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
 
 class Order(models.Model):
-    total = models.FloatField()
     items = models.ManyToManyField(
-        Product, related_name='Order')
+        Order_item, related_name='cart', null=True, blank=True)
+    total = models.FloatField()
     customer = models.ForeignKey(
         Customer, related_name='orders', on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
-
-
-
-class Seller_Image(models.Model):
-    title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='images')
-    seller = models.ForeignKey(Seller, related_name='profile_pic', on_delete=models.CASCADE)
-    def __str__(self):
-        return self.title
-    

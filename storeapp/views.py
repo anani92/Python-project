@@ -2,38 +2,38 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from storeapp.models import Customer, Seller, Product, Product_category, Order
 from storeapp.models import Seller
+from django.contrib.auth.decorators import login_required
 import bcrypt
 from utils.views import Cart
 
+
 def index(request):
-    
     return redirect('/home')
 
 
 def home(request):
     context = {}
-    cart = Cart(request)
     if 'seller_id' in request.session:
         seller = Seller.objects.get(id=request.session['seller_id'])
         if seller:
             context = {
-                'cart': cart,
                 'seller': seller,
+                'sellers': Seller.objects.all,
                 'products': Product.objects.all()
             }
     if 'customer_id' in request.session:
         user = Customer.objects.get(id=request.session['customer_id'])
         if user:
             context = {
-                'cart': cart,
                 'user': user,
+                'sellers': Seller.objects.all,
                 'products': Product.objects.all()
             }
     else:
         context = {
-            'cart': cart,
             'seller': None,
             'user': None,
+            'sellers': Seller.objects.all,
             'products': Product.objects.all()
         }
     return render(request, 'store/home.html', context)
@@ -151,6 +151,7 @@ def create_product(request):
     )
     new_product.seller.add(seller)
     new_product.save()
+
     return redirect('/seller')
 
 
@@ -158,17 +159,19 @@ def view_product(request, id):
     product = Product.objects.get(id=id)
     context = {
         'product': product,
+
     }
     return render(request, 'store/product.html', context)
 
 
-def view_seller_profile(request):
-    return
+def view_seller_profile(request, id):
+    context = {
+        'seller': Seller.objects.get(id=id)
+    }
+    return render(request, 'store/seller_profile.html', context)
 
 
 def all_products(request):
-    if ('customer_id' not in request.session)and ('seller_id' not in request.session):
-        return redirect('/login_customer')
     customer = Customer.objects.get(id=request.session['customer_id'])
     context = {
         'all_products': Product.objects.all(),
@@ -178,20 +181,17 @@ def all_products(request):
 
 
 def customer_profile(request):
-    if ('customer_id' not in request.session)and ('seller_id' not in request.session):
-        return redirect('/login_customer')
     customer = Customer.objects.get(id=request.session['customer_id'])
     context = {
         'customer': customer,
         'orders': customer.orders.all(),
     }
-    print(customer)
     return render(request, 'store/customer.html', context)
 
 
 def seller_profile(request):
+    seller = Seller.objects.get(id=request.session['seller_id'])
     if 'seller_id' in request.session:
-        seller = Seller.objects.get(id=request.session['seller_id'])
         context = {
             'seller': seller,
             'categories': Product_category.objects.all()
@@ -202,14 +202,13 @@ def seller_profile(request):
 
 
 # @login_required(login_url="/login/login")
-def add_to_cart(request):
-    product_id = request.POST.get('product_id')
+def add_to_cart(request, id):
     quantity = request.POST.get('quantity')
-    product = Product.objects.get(id=product_id)
-    print(product.name , 'hello')
     cart = Cart(request)
+    product = Product.objects.get(id=id)
     cart.add(product, quantity)
-    return redirect(f'/view_product/{product_id}')
+
+    return redirect(request.path)
 
 
 # @login_required(login_url="/login/login")
@@ -257,15 +256,15 @@ def show_cart(request):
 # @login_required
 def place_order(request):
     cart = Cart(request)
-    customer_id = request.session['customer'] 
+    customer_id = request.session['customer_id']
     customer = Customer.objects.get(id=customer_id)
-    total = cart.get_total_price()
+    total = [item.quantity * item.price for item in cart.values()]
     new_order = Order.objects.create(
         customer=customer,
         total=sum(total),
     )
-    order_items = iter(cart)
-    new_order.order_items.add(item for item in order_items)
+    for item in cart.cart:
+        new_order.order_items.add(item)
     new_order.save()
     customer.orders.add(new_order)
     return redirect('/customer_profile')
