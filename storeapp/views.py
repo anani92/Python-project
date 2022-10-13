@@ -170,11 +170,7 @@ def all_products(request):
     context = {
         'all_products': Product.objects.all()
     }
-<<<<<<< HEAD
     return render(request, 'store/all_products.html', context)
-=======
-    return render(request, 'store/sales.html', context)
->>>>>>> a5871b579f028ad83c456ce65952a765b3549085
 
 
 def customer_profile(request):
