@@ -15,8 +15,16 @@ urlpatterns = [
     path('seller', views.seller_profile),
     path('customer_profile', views.customer_profile),
     path('all_products', views.all_products),
+    # ========= cart =========
     path('cart', views.show_cart),
-    path('add_to_cart', views.add_to_cart),
+    path('add_to_cart',
+         views.add_to_cart),
+    path('cart/item_increment/<int:id>',
+         views.item_increment),
+    path('cart_item_decrement/<int:id>',
+         views.item_decrement),
+    path('cart_item_clear/<int:id>/', views.item_clear),
+    path('cart_cart_clear/', views.cart_clear),
     path('place_order', views.place_order),
     path('about', views.about_page),
     path('logout', views.logout)

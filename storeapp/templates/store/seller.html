@@ -134,7 +134,7 @@
         <div class="col-md-7">
           <div class="card">
             <div class="text-center">
-              <img src="{{seller.image}}" width="200" />
+              <img src="{{seller.profile_pic}}" width="200" />
             </div>
             <div class="text-center">
               <span class="bg-warning p-1 px-4 rounded text-white"
@@ -149,7 +149,7 @@
         </div>
       </div>
     </div>
-    <h1 class="container text-center form_header my-5">Add New Product:</h1>
+    <h1 class="text-center my-5">Add New Product:</h1>
 
     <div class="d-flex justify-content-center mb-5 container col-8">
       <form
@@ -259,7 +259,28 @@
         <div class="card-body text-center">
           <h5 class="card-title text-center .text-nowrap">{{item.name}}</h5>
           <h5 class="card-title text-center .text-nowrap">{{item.price}}</h5>
-          <a href="#!" class="btn btn-warning">Buy</a>
+          <form
+            action="/add_to_cart"
+            method="POST"
+            class="form d-flex flex-column"
+          >
+            {%csrf_token%}
+            <input
+              type="number"
+              class="form-control-range"
+              name="quantity"
+              placeholder="quantity"
+              min="1"
+              value="1"
+            />
+            <input
+              type="hidden"
+              name="product_id"
+              value="{{item.id}}"
+              placeholder="0"
+            />
+            <input class="btn btn-warning" type="submit" value="buy" />
+          </form>
         </div>
       </div>
       {%endfor%}

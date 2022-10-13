@@ -2,22 +2,22 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from storeapp.models import Customer, Seller, Product, Product_category, Order
 from storeapp.models import Seller
-from django.http import HttpResponseRedirect
 import bcrypt
-
+from utils.views import Cart
 
 def index(request):
-    if 'cart' not in request.session:
-        request.session['cart'] = {}
+    
     return redirect('/home')
 
 
 def home(request):
     context = {}
+    cart = Cart(request)
     if 'seller_id' in request.session:
         seller = Seller.objects.get(id=request.session['seller_id'])
         if seller:
             context = {
+                'cart': cart,
                 'seller': seller,
                 'products': Product.objects.all()
             }
@@ -25,11 +25,13 @@ def home(request):
         user = Customer.objects.get(id=request.session['customer_id'])
         if user:
             context = {
+                'cart': cart,
                 'user': user,
                 'products': Product.objects.all()
             }
     else:
         context = {
+            'cart': cart,
             'seller': None,
             'user': None,
             'products': Product.objects.all()
@@ -126,6 +128,7 @@ def create_seller(request):
     return redirect('/seller')
 
 
+# @login_required
 def create_product(request):
     seller_id = request.session['seller_id']
     seller = Seller.objects.get(id=seller_id)
@@ -166,9 +169,10 @@ def view_seller_profile(request):
 def all_products(request):
     if ('customer_id' not in request.session)and ('seller_id' not in request.session):
         return redirect('/login_customer')
-    # customer = Customer.objects.get(id=request.session['customer_id'])
+    customer = Customer.objects.get(id=request.session['customer_id'])
     context = {
-        'all_products': Product.objects.all()
+        'all_products': Product.objects.all(),
+        'customer': customer,
     }
     return render(request, 'store/all_products.html', context)
 
@@ -178,15 +182,16 @@ def customer_profile(request):
         return redirect('/login_customer')
     customer = Customer.objects.get(id=request.session['customer_id'])
     context = {
-        'customer': customer
+        'customer': customer,
+        'orders': customer.orders.all(),
     }
     print(customer)
     return render(request, 'store/customer.html', context)
 
 
 def seller_profile(request):
-    seller = Seller.objects.get(id=request.session['seller_id'])
     if 'seller_id' in request.session:
+        seller = Seller.objects.get(id=request.session['seller_id'])
         context = {
             'seller': seller,
             'categories': Product_category.objects.all()
@@ -196,33 +201,71 @@ def seller_profile(request):
         return redirect('/login_seller')
 
 
-def show_cart(request):
-    if 'customer_id' not in request.session:
-        return redirect('/login_customer')
-    cart = request.session['cart']
-    context = {
-        'cart': cart,
-    }
-    return render(request, 'store/cart.html', context)
-
-
-def add_to_cart(request, product_id):
-    product = Product.objects.get(id=product_id)
+# @login_required(login_url="/login/login")
+def add_to_cart(request):
+    product_id = request.POST.get('product_id')
     quantity = request.POST.get('quantity')
-    request.session['cart'][quantity] = product
-    return redirect(request.path_info)
+    product = Product.objects.get(id=product_id)
+    print(product.name , 'hello')
+    cart = Cart(request)
+    cart.add(product, quantity)
+    return redirect(f'/view_product/{product_id}')
 
 
+# @login_required(login_url="/login/login")
+def item_clear(request, id):
+    cart = request.session
+    product = Product.objects.get(id=id)
+    cart.remove(product)
+    return redirect("cart")
+
+
+# @login_required(login_url="/login/login")
+def item_increment(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.cart.get(product.id)['quantity'] -= 1
+    return redirect("cart")
+
+
+# @login_required(login_url="/login/login")
+def item_decrement(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.cart.get(product.id)['quantity'] -= 1
+    return redirect("cart")
+
+
+# @login_required(login_url="/login/login")
+def cart_clear(request):
+    cart = Cart(request)
+    cart.clear()
+    return redirect("cart_detail")
+
+
+# @login_required(login_url="/login/login")
+def show_cart(request):
+    cart = Cart(request)
+    context = {
+        'cart': cart.cart,
+        'total': cart.get_total_price(),
+        'items_in_cart': len(cart),
+    }
+    return render(request, 'store/cart.html')
+
+
+# @login_required
 def place_order(request):
-    cart = request.session['cart']
-    customer = request.session['customer']
-    total = [quantity * product.price for quantity, product in cart.items()]
+    cart = Cart(request)
+    customer_id = request.session['customer'] 
+    customer = Customer.objects.get(id=customer_id)
+    total = cart.get_total_price()
     new_order = Order.objects.create(
         customer=customer,
         total=sum(total),
     )
-    for item in cart:
-        new_order.order_items.add(item)
+    order_items = iter(cart)
+    new_order.order_items.add(item for item in order_items)
     new_order.save()
     customer.orders.add(new_order)
     return redirect('/customer_profile')
