@@ -31,7 +31,7 @@
               <div
                 class="col-md-4 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0"
               >
-                <a href="#!" class="ms-md-2 text-success text-decoration-none">
+                <a href="/" class="ms-md-2 text-success text-decoration-none">
                   <h1>MyStore</h1>
                 </a>
               </div>
@@ -59,19 +59,31 @@
                     <span><i class="fas fa-shopping-cart"></i></span>
                     <span
                       class="badge rounded-pill badge-notification bg-danger"
-                      >1</span
+                      >0</span
                     >
                   </a>
 
                   <!-- User -->
                   {%if user or seller%}
-                  <a href="/logout" class="btn btn-outline-success btn-sm">
-                    Logout
-                  </a>
+                  <a href="/logout" class="btn btn-outline-success btn-sm">Log out</a>
                   {%else%}
-                  <a href="/login_customer" class="btn btn-success btn-sm mx-2"
-                    >login</a
-                  >{%endif%}
+                  <a href="/login_customer" class="btn btn-success btn-sm mx-2">login</a>
+                  {%endif%}
+                {% if request.session.seller_id %}
+                <a
+                class="btn btn-success btn-sm mx-2 rounded-pill"
+                  href="/seller"
+                >
+                My Account
+                </a>
+                {%else%}
+                <a
+                class="btn btn-success btn-sm mx-2 rounded-pill"
+                  href="/customer_profile" 
+                >
+                My Account
+                </a>
+                {%endif%}      
                 </div>
               </div>
             </div>
@@ -115,23 +127,7 @@
               <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
                 <a class="nav-link" href="#contact">Contact</a>
               </li>
-              <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-5">
-                {% if request.session.seller_id %}
-                <a
-                  class="nav-link btn btn-warning font-weight-bold"
-                  href="/seller"
-                >
-                  Seller Account
-                </a>
-                {%else%}
-                <a
-                  class="nav-link btn btn-warning font-weight-bold"
-                  href="/login_seller"
-                >
-                  Sell
-                </a>
-                {%endif%}
-              </li>
+              
             </ul>
           </div>
         </nav>
@@ -155,7 +151,7 @@
               <h4 class="mb-4 text-success">Promotions up to 70%!</h4>
               <a
                 class="btn btn-outline-success btn-lg mb-3"
-                href="#!"
+                href="/all_products"
                 role="button"
                 >See the promotional offer
                 <i class="fas fa-gem ms-1"></i>
