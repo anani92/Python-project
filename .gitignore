@@ -3,10 +3,12 @@ venv
 __init__.py
 migrations
 __pycache__
-sqlite3
-__pycache__/
-*.py[cod]
 *.pyc
+sqlite3
+**/__pycache__
+
+*.py[cod]
+
 # C extensions
 *.so
 
@@ -24,6 +26,5 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-*.pyc
 # Installer logs
 pip-log.txt
