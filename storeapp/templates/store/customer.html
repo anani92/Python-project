@@ -155,28 +155,27 @@
                 </div>
                 <div class="col-md-8">
                   <div class="card-body p-4">
-                    <h6>Hello {{}}</h6>
-                    <hr class="mt-0 mb-4" />
+                    <h6>Hello {{customer.first_name}}</h6>
+                    <hr class="mt-0 mb-4">
                     <div class="row pt-1">
-                      <div class="col-6 mb-3">
-                        <h6>Email</h6>
-                        <p class="text-muted">info@example.com</p>
-                      </div>
-                      <div class="col-6 mb-3">
-                        <h6>Phone</h6>
-                        <p class="text-muted">123 456 789</p>
-                      </div>
-                    </div>
-                    <br />
-                    <div class="row pt-1">
-                      <div class="col-6 mb-3">
-                        <h6>City</h6>
-                        <p class="text-muted">{{}}</p>
-                      </div>
-                      <div class="col-6 mb-3">
+                        <div class="col-6 mb-3">
+                        <h6>Name</h6>
+                        <p class="text-muted">{{customer.first_name}} {{customer.last_name}}</p>
+                        </div>
+                        <div class="col-6 mb-3">
                         <h6>Address</h6>
-                        <p class="text-muted">{{}}</p>
-                      </div>
+                        <p class="text-muted">{{customer.address}}</p>
+                        </div>
+                    </div><br>
+                    <div class="row pt-1">
+                        <div class="col-6 mb-3">
+                        <h6>Email</h6>
+                        <p class="text-muted">{{customer.email}}</p>
+                        </div>
+                        <div class="col-6 mb-3">
+                        <h6>Phone</h6>
+                        <p class="text-muted">{{customer.mobile}}</p>
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -197,15 +196,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <p class="fw-normal mb-1">{{order id}}</p>
-            </td>
-            <td>
-              <span class="fw-normal mb-1">{{fidjs}}</span>
-            </td>
-            <td>{{##}}</td>
-          </tr>
+          {% for order in customer.orders.all %}
+            <tr>
+                <td>
+                    <p class="fw-normal mb-1">{{order.id}}</p>
+                </td>
+                <td>
+                    <span class="fw-normal mb-1">{{order.created_at}}</span>
+                </td>
+                <td>{{order.total}}</td>
+            </tr>
+            {% endfor %}
         </tbody>
       </table>
     </div>

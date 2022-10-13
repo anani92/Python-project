@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from storeapp.models import Customer, Seller, Product, Product_category, Order
+from storeapp.models import Customer, Order_item, Seller, Product, Product_category, Order
 from storeapp.models import Seller
 import bcrypt
 from utils.views import Cart
-
 
 def index(request):
     
@@ -13,7 +12,7 @@ def index(request):
 
 def home(request):
     context = {}
-    # cart = Cart()
+    cart = Cart(request)
     if 'seller_id' in request.session:
         seller = Seller.objects.get(id=request.session['seller_id'])
         if seller:
@@ -179,17 +178,20 @@ def all_products(request):
 
 
 def customer_profile(request):
-    customer = Customer.objects.get(id=request.session['customer_id'])
-    context = {
-        'customer': customer,
-        'orders': customer.orders.all(),
-    }
-    return render(request, 'store/customer.html', context)
-
+    if 'customer_id' in request.session:
+        customer = Customer.objects.get(id=request.session['customer_id'])
+        context = {
+            'customer': customer,
+            'orders': customer.orders.all(),
+        }
+        return render(request, 'store/customer.html', context)
+    elif 'seller_id' in request.session:
+        return redirect('/seller')
+    return redirect('/login_customer')
 
 def seller_profile(request):
-    seller = Seller.objects.get(id=request.session['seller_id'])
     if 'seller_id' in request.session:
+        seller = Seller.objects.get(id=request.session['seller_id'])
         context = {
             'seller': seller,
             'categories': Product_category.objects.all()
@@ -202,7 +204,7 @@ def seller_profile(request):
 # @login_required(login_url="/login/login")
 def add_to_cart(request):
     product_id = request.POST.get('product_id')
-    quantity = request.POST.get('quantity')
+    quantity = int(request.POST.get('quantity'))
     product = Product.objects.get(id=product_id)
     print(product.name , 'hello')
     cart = Cart(request)
@@ -215,7 +217,7 @@ def item_clear(request, id):
     cart = request.session
     product = Product.objects.get(id=id)
     cart.remove(product)
-    return redirect("cart")
+    return redirect("/cart")
 
 
 # @login_required(login_url="/login/login")
@@ -223,7 +225,7 @@ def item_increment(request, id):
     cart = Cart(request)
     product = Product.objects.get(id=id)
     cart.cart.get(product.id)['quantity'] -= 1
-    return redirect("cart")
+    return redirect("/cart")
 
 
 # @login_required(login_url="/login/login")
@@ -231,38 +233,43 @@ def item_decrement(request, id):
     cart = Cart(request)
     product = Product.objects.get(id=id)
     cart.cart.get(product.id)['quantity'] -= 1
-    return redirect("cart")
+    return redirect("/cart")
 
 
 # @login_required(login_url="/login/login")
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
-    return redirect("cart_detail")
+    return redirect("/cart")
 
 
 # @login_required(login_url="/login/login")
 def show_cart(request):
     cart = Cart(request)
     context = {
-        'cart': cart.cart,
+        'cart': iter(cart),
         'total': cart.get_total_price(),
         'items_in_cart': len(cart),
+        
     }
-    return render(request, 'store/cart.html')
+    return render(request, 'store/cart.html',context)
 
 
 # @login_required
 def place_order(request):
-    cart = request.session['cart']
-    customer = request.session['customer']
-    total = [quantity * product.price for quantity, product in cart.items()]
+    cart = Cart(request)
+    customer_id = request.session['customer_id'] 
+    customer = Customer.objects.get(id=customer_id)
+    total = cart.get_total_price()
     new_order = Order.objects.create(
         customer=customer,
         total=sum(total),
     )
-    for item in cart:
+    items_id = [item.id for item in cart.cart]
+    order_items = Product.objects.filter(id__in=items_id)
+    for item in order_items:
         new_order.order_items.add(item)
+        print(item.id)
     new_order.save()
     customer.orders.add(new_order)
     return redirect('/customer_profile')
