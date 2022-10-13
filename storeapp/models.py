@@ -1,4 +1,3 @@
-from email.policy import default
 from django.db import models
 import re
 import bcrypt
@@ -124,7 +123,7 @@ class Product(models.Model):
 
 class Order_item(models.Model):
     product = models.ForeignKey(
-        Product, related_name='order_item')
+        Product, related_name='order_item', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)

@@ -2,10 +2,10 @@
 venv
 __init__.py
 migrations
-__pycache__
+**/__pycache__
 *.pyc
 sqlite3
-**/__pycache__
+__pycache__/
 
 *.py[cod]
 

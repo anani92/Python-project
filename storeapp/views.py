@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from storeapp.models import Customer, Seller, Product, Product_category, Order
 from storeapp.models import Seller
-from django.contrib.auth.decorators import login_required
 import bcrypt
 from utils.views import Cart
 
@@ -250,7 +249,7 @@ def show_cart(request):
         'total': cart.get_total_price(),
         'items_in_cart': len(cart),
     }
-    return render(request, 'store/cart.html')
+    return render(request, 'store/cart.html', context)
 
 
 # @login_required
