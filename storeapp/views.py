@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from storeapp.models import Customer, Seller, Product, Product_category, Order
+from storeapp.models import Customer, Profile_picture, Seller, Product, Product_category, Order
 from storeapp.models import Seller
 import bcrypt
 from utils.views import Cart
@@ -138,19 +138,19 @@ def create_product(request):
     quantity = request.POST.get('quantity')
     description = request.POST.get('description')
     sale = request.POST.get('sale')
-    image = request.POST.get('image')
+    image = request.FILES.get('image')
     new_product = Product.objects.create(
         name=name,
         quantity=quantity,
         category=category,
         description=description,
         price=price,
-        sale=sale,
-        image=image
+        sale=sale
     )
+    if image:
+        new_product.image = image
     new_product.seller.add(seller)
     new_product.save()
-
     return redirect('/seller')
 
 
@@ -169,21 +169,39 @@ def view_seller_profile(request, id):
     }
     return render(request, 'store/seller_profile.html', context)
 
+def best_sellers(request):
+    context = {
+        'sellers': Seller.objects.all()
+    }
+    return render(request, 'store/best_sellers.html', context)
 
 def all_products(request):
     context = {
+        'sellers': Seller.objects.all(),
         'all_products': Product.objects.all(),
     }
     return render(request, 'store/all_products.html', context)
 
+def view_sales(request):
+    sales = Product.objects.filter(sale__gt=10)
+    sellers = Seller.objects.all()
+    context = {
+        'products_on_sales': sales,
+        'sellers': sellers
+    }
+    return render(request, 'store/sales.html', context)
 
 def customer_profile(request):
-    customer = Customer.objects.get(id=request.session['customer_id'])
-    context = {
-        'customer': customer,
-        'orders': customer.orders.all(),
-    }
-    return render(request, 'store/customer.html', context)
+    if 'customer_id' in request.session:
+        customer = Customer.objects.get(id=request.session['customer_id'])
+        context = {
+            'customer': customer,
+            'orders': customer.orders.all(),
+        }
+        return render(request, 'store/customer.html', context)
+    else:
+        return redirect('/customer_login')
+
 
 
 def seller_profile(request):
@@ -197,6 +215,22 @@ def seller_profile(request):
     else:
         return redirect('/login_seller')
 
+def add_profile_picture(request):
+    if request.POST.get('seller_image'):
+        seller = Seller.objects.get(id=request.session['seller_id'])
+        seller_pic = Profile_picture.objects.create(
+            seller_picture=request.FILE.get('seller_image')
+        )
+        seller_pic.save()
+        seller.seller_picture = seller_pic
+    elif request.POST.get('customer_image'):
+        customer = Customer.objects.get(id=request.session['customer_id'])
+        customer_pic = Profile_picture.objects.create(
+            customer_picture=request.FILE['customer_image']
+        )
+        customer_pic.save()
+        customer.seller_picture = customer_pic
+    return redirect(request.META.get('HTTP_REFERER'))
 
 # @login_required(login_url="/login/login")
 def add_to_cart(request, id):
@@ -236,7 +270,7 @@ def item_decrement(request, id):
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
-    return redirect("cart_detail")
+    return redirect("/cart")
 
 
 # @login_required(login_url="/login/login")
@@ -274,3 +308,6 @@ def about_page(request):
 def logout(request):
     request.session.clear()
     return redirect('/')
+
+def test(request):
+    return render(request, 'store/test.html')

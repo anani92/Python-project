@@ -1,0 +1,85 @@
+{% extends 'store/base_header.html' %} {% block content%}
+<!-- seller info -->
+{% for seller in sellers %}
+<!-- seller info -->
+<div class="container mt-5 mb-5">
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-7">
+      <div
+        class="card p-3 py-4 bg-image shadow-lg rounded text-white"
+        style="
+          background-image: linear-gradient(
+            160deg,
+            #28a745 0%,
+            #108c7e 75%,
+            #85cec5 100%
+          );
+        "
+      >
+        <div class="text-center">
+          <img
+            src="{{seller.image}}"
+            class="img-fluid max-width: 100%; height: auto; rounded"
+            width="300"
+          />
+        </div>
+        <div class="text-center mt-3">
+          <h5 class="mt-2 mb-0">{{seller.name}}</h5>
+          <div class="px-4 mt-1">
+            <p class="fonts">{{seller.description}}</p>
+            <a href="/seller/{{seller.id}}" class="btn btn-warning"
+              >View Profile</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Seller Products Caraousal -->
+<h1 class="container text-center mt-5 form_header">
+  {{seller.name}} Products:
+</h1>
+<div class="container">
+  <div class="row">
+    <div
+      class="MultiCarousel"
+      data-items="1,2,3,4"
+      data-slide="2"
+      id="MultiCarousel"
+      data-interval="1000"
+    >
+      <div class="MultiCarousel-inner">
+        {% for product in seller.product.all%}
+        <div class="item text-decoration-none" href="/seller">
+          <div
+            class="card pad1 text-white text-center"
+            style="
+              background-image: linear-gradient(
+                160deg,
+                #28a745 0%,
+                #108c7e 75%,
+                #85cec5 100%
+              );
+            "
+            href="/seller"
+          >
+            <img height="180" alt="100%x280" src="{{product.image}}" />
+            <div class="card-body text-center">
+              <h4 class="card-title">{{product.name}}</h4>
+              <p class="card-text">{{product.price}} $</p>
+              <a href="/view_product/{{product.id}}" class="btn btn-warning"
+                >Buy</a
+              >
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <button class="btn btn-success leftLst"><</button>
+      <button class="btn btn-success rightLst">></button>
+    </div>
+  </div>
+</div>
+{% endfor %} {% include 'store/base_footer.html'%}{% endblock %}

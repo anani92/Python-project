@@ -27,7 +27,7 @@ class User_Manager(models.Manager):
     def validate_seller(self, request_data):
         errors = {}
         email = request_data.POST.get('email')
-        users = Customer.objects.filter(email=email)
+        users = Seller.objects.filter(email=email)
         if len(request_data.POST.get('seller_name')) < 2:
             errors['seller_name'] = 'name should be at least 2 letters'
         if len(request_data.POST['password']) < 8:
@@ -92,12 +92,39 @@ class Seller(models.Model):
     mobile = models.IntegerField()
     email = models.CharField(max_length=95)
     description = models.TextField()
-    # profile_pic = models.ImageField()
     city = models.CharField(max_length=55)
     password = models.CharField(max_length=80)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
     objects = User_Manager()
+
+
+class Profile_picture(models.Model):
+    seller_picture = models.ImageField(upload_to='media/',null=True, blank=True)
+    seller = models.ForeignKey(Customer, related_name='profile_picture', on_delete=models.CASCADE)
+    seller = models.ForeignKey(Seller, related_name='profile_picture', on_delete=models.CASCADE)
+    customer_picture = models.ImageField(upload_to='media/', null=True, blank=True)
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.seller_picture:
+           seller_picture = seller_picture.open(self.seller_picture.path)
+           if seller_picture.height > 1500 or seller_picture.width > 1500:
+              output_size = (1500, 1500)
+              seller_picture.thumbnail(output_size)
+              seller_picture.save(self.image1.path)
+        if self.customer_picture:
+           customer_picture = customer_picture.open(self.customer_picture.path)
+           if customer_picture.height > 1500 or customer_picture.width > 1500:
+              output_size = (1500, 1500)
+              customer_picture.thumbnail(output_size)
+              customer_picture.save(self.customer_picture.path)
+
+
+class Top_sellers(models.Model):
+    seller = models.ForeignKey(Seller, 
+        related_name='top_seller',
+        on_delete=models.CASCADE
+        )
 
 
 class Product_category(models.Model):
@@ -115,10 +142,14 @@ class Product(models.Model):
     price = models.FloatField()
     seller = models.ManyToManyField(
         Seller, related_name='product')
-    sale = models.FloatField(default=0.00)
+    sale = models.IntegerField(default=0)
     image = models.ImageField(null=True, blank=True, upload_to='media/')
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
+
+class Top_product(models.Model):
+    products = models.ForeignKey(Seller, related_name='top_product', on_delete=models.CASCADE)
+
 
 
 class Order_item(models.Model):
@@ -131,9 +162,10 @@ class Order_item(models.Model):
 
 class Order(models.Model):
     items = models.ManyToManyField(
-        Order_item, related_name='cart', null=True, blank=True)
+        Order_item, related_name='cart', blank=True)
     total = models.FloatField()
     customer = models.ForeignKey(
         Customer, related_name='orders', on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
+

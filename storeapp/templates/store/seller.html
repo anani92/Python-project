@@ -4,22 +4,15 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MyStore</title>
-
+    <title>Best Seller</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'store\css\seller.css' %}" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'store/css/home.css' %}" />
   </head>
   <body>
     <header class="container main_header" style="height: 220px">
@@ -31,7 +24,7 @@
               <div
                 class="col-md-4 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0"
               >
-                <a href="/" class="ms-md-2 text-success text-decoration-none">
+                <a href="#!" class="ms-md-2 text-success text-decoration-none">
                   <h1>MyStore</h1>
                 </a>
               </div>
@@ -54,32 +47,24 @@
                 class="col-md-4 d-flex justify-content-center justify-content-md-end align-items-center"
               >
                 <div class="d-flex my-2">
-                
+                  <!-- Cart -->
+                  <a class="text-reset me-3" href="/cart">
+                    <span><i class="fas fa-shopping-cart"></i></span>
+                    <span
+                      class="badge rounded-pill badge-notification bg-danger"
+                      >1</span
+                    >
+                  </a>
 
                   <!-- User -->
-                  {%if user or seller%}
-                  <a href="/logout" class="btn btn-outline-success btn-sm">
-                    Log out
+                  {%if seller%}
+                  <a href="/logout" class="btn btn-outline-danger btn-sm">
+                    Logout
                   </a>
                   {%else%}
                   <a href="/login_customer" class="btn btn-success btn-sm mx-2"
                     >login</a
                   >{%endif%}
-                  {% if request.session.seller_id %}
-                  <a
-                  class="btn btn-success btn-sm mx-2 rounded-pill"
-                    href="/seller"
-                  >
-                  My Account
-                  </a>
-                  {%else%}
-                  <a
-                  class="btn btn-success btn-sm mx-2 rounded-pill"
-                    href="/customer_profile" 
-                  >
-                  My Account
-                  </a>
-                  {%endif%} 
                 </div>
               </div>
             </div>
@@ -104,7 +89,7 @@
                   >Categories</span
                 >
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="/all_products">All Products</a>
+                  <a class="dropdown-item" href="#">All Products</a>
                   <hr class="dropdown-divider" />
                   <a class="dropdown-item" href="#">Vegetables</a>
                   <a class="dropdown-item" href="#">Fruit</a>
@@ -115,30 +100,53 @@
               </li>
               `
               <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
-                <a class="nav-link" href="/all_products">Sales</a>
+                <a class="nav-link" href="#">Sales</a>
               </li>
               <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
                 <a class="nav-link" href="/about">About</a>
               </li>
               <li class="nav-item me-2 me-lg-0 d-none d-md-inline-block mx-4">
-                <a class="nav-link" href="/#contact">Contact</a>
+                <a class="nav-link" href="#contact">Contact</a>
               </li>
-              
             </ul>
           </div>
         </nav>
       </div>
     </header>
-    <div class="container">
+    <div class="container mt-5">
       <div class="row d-flex justify-content-center">
         <div class="col-md-7">
-          <div class="card">
-            <div class="text-center">
-              <img src="{{seller.profile_pic}}" width="200" />
+          <div class="card p-3 py-4">
+            <div
+              class="seller_picture d-flex justify-content-center flex-column mb-5 rounded circle"
+            >
+              <div class="container text-center">
+                <img
+                  src="{% static 'store/imgs/profile.png' %}"
+                  class="rounded-circle account-img"
+                  id="profile_pic"
+                />
+              </div>
+
+              <form
+                action="add_profile_picture"
+                method="post"
+                enctype="multipart/form-data"
+                class="form-group"
+              >
+                {% csrf_token %}
+
+                <label for="seller_img" class="label d-block">
+                  <i class="fa-solid fa-camera" style="font-size: 1.75rem">
+                    <input type="file" id="seller_img" class="w-25" />
+                  </i>
+                </label>
+                <button class="btn-success">Add profile picture</button>
+              </form>
             </div>
-            <div class="text-center">
+            <div class="text-center mt-3">
               <span class="bg-warning p-1 px-4 rounded text-white"
-                >1st Seller</span
+                >Best Seller</span
               >
               <h5 class="mt-2 mb-0">{{seller.name}}</h5>
               <div class="px-4 mt-1">
@@ -160,14 +168,14 @@
       >
         {% csrf_token %}
         <div class="input-group mb-3">
-          <span class="input-group-text rounded col-4 text-center form_span"
+          <span class="input-group-text rounded col-1 text-center form_span"
             >Name:</span
           >
           <input type="text" class="form-control rounded" name="name" />
         </div>
 
         <div class="input-group mb-3">
-          <span class="input-group-text col-4 rounded form_span">Price:</span>
+          <span class="input-group-text col-1 rounded form_span">Price:</span>
           <input type="number" class="form-control rounded" name="price" />
           <span class="input-group-text rounded text-center form_span"
             >USD$</span
@@ -175,7 +183,7 @@
         </div>
 
         <div class="input-group mb-3">
-          <span class="input-group-text col-4 rounded form_span"
+          <span class="input-group-text col-1 rounded form_span"
             >Quantity:</span
           >
           <input type="number" class="form-control rounded" name="quantity" />
@@ -185,7 +193,7 @@
         </div>
 
         <div class="input-group mb-3">
-          <span class="input-group-text rounded col-4 text-center form_span"
+          <span class="input-group-text rounded col-1 text-center form_span"
             >Sale:</span
           >
           <input
@@ -197,11 +205,11 @@
           />
         </div>
         <div class="input-group mb-3">
-          <label class="input-group-text col-4 rounded form_label"
+          <label class="input-group-text col-1 rounded form_label"
             >Categories:</label
           >
           <select
-            class="custom-select col-8 rounded form-control"
+            class="custom-select col-1 rounded form-control"
             name="category"
             value="{{category.id}}"
           >
@@ -211,18 +219,19 @@
           </select>
         </div>
 
-        <div class="input-group mb-3">
-          <label class="input-group-text col-4 rounded form_label"
+        <div class="form-group col-6 input-group mb-3">
+          <label class="input-group-text col-1 rounded form_label"
             >Image:</label
           >
           <label class="custom-file-upload form_label">
             <input type="file" name="image" />
-            <i class="fa fa-cloud-upload"></i>Click here to upload image of the
+            <i class="fa fa-cloud-upload"></i>Click here tou upload image of the
             product.
           </label>
         </div>
-        <div class="input-group mb-3">
-          <span class="input-group-text col-4 form_span rounded"
+
+        <div class="form-group col-6 input-group mb-3">
+          <span class="input-group-text col-1 form_span rounded"
             >Description:</span
           >
           <textarea
@@ -249,7 +258,7 @@
           class="card-img-top"
           alt="{{item.name}}"
         />
-        {{ item.image.url }} {%else%}
+        {%else%}
         <img
           src="{% static 'store/imgs/default_product.png' %}"
           class="card-img-top"
@@ -285,82 +294,17 @@
       </div>
       {%endfor%}
     </div>
-    <!-- footer -->
-    <footer class="bg-light text-center text-white col-10 container">
-      <!-- Grid container -->
-      <div class="container p-4 pb-0">
-        <!-- Section: Social media -->
-        <section class="mb-1">
-          <h3 class="text-black">Contact Us:</h3>
-          <!-- Facebook -->
-          <a
-            class="btn text-white btn-floating m-1"
-            style="background-color: #3b5998"
-            href="#!"
-            role="button"
-            ><i class="fab fa-facebook-f"></i
-          ></a>
-
-          <!-- Twitter -->
-          <a
-            class="btn text-white btn-floating m-1"
-            style="background-color: #55acee"
-            href="#!"
-            role="button"
-            ><i class="fab fa-twitter"></i
-          ></a>
-
-          <!-- Instagram -->
-          <a
-            class="btn text-white btn-floating m-1"
-            style="background-color: #ac2bac"
-            href="#!"
-            role="button"
-            ><i class="fab fa-instagram"></i
-          ></a>
-
-          <!-- Linkedin -->
-          <a
-            class="btn text-white btn-floating m-1"
-            style="background-color: #0082ca"
-            href="#!"
-            role="button"
-            ><i class="fab fa-linkedin-in"></i
-          ></a>
-        </section>
-        <!-- Section: Social media -->
+    <footer>
+      <div class="contacts contaienr d-flex justify-content-evenly my-5">
+        <h4>Contact us:</h4>
+        <a href=""><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href=""><i class="fa-brands fa-facebook"></i></a>
+        <a href=""><i class="fa-brands fa-instagram"></i></a>
+        <a href=""><i class="fas fa-phone"></i></a>
       </div>
-      <!-- Grid container -->
-
-      <!-- Copyright -->
-      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-        © 2022 Copyright:
-        <a class="text-white" href="https://mdbootstrap.com/">MyStore.com</a>
-      </div>
-      <!-- Copyright -->
     </footer>
-    <!-- end footer -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
     <script
       src="https://kit.fontawesome.com/27d8b168ea.js"
       crossorigin="anonymous"

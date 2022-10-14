@@ -5,7 +5,7 @@ body {
   font-size: 1.5rem;
 }
 .card:before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -18,7 +18,7 @@ body {
 }
 
 .card:after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -30,7 +30,7 @@ body {
 }
 
 .fonts {
-  font-size: 11px;
+  font-size: 0.85rem;
 }
 
 .social-list {
@@ -84,7 +84,7 @@ body {
   height: 40px;
 }
 
-input[type='file'] {
+input[type="file"] {
   display: none;
 }
 
@@ -115,11 +115,10 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 8px;
-  cursor: pointer;
 }
 
 .card:before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -132,7 +131,7 @@ body {
 }
 
 .card:after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -151,7 +150,7 @@ body {
   height: 40px;
 }
 
-input[type='file'] {
+input[type="file"] {
   display: none;
 }
 
@@ -159,7 +158,6 @@ input[type='file'] {
   border: 1px solid #ced4da;
   display: inline-block;
   padding: 6px 12px;
-  cursor: pointer;
   border-radius: 5px;
 }
 
@@ -182,11 +180,10 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 8px;
-  cursor: pointer;
 }
 
 .card:before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -199,7 +196,7 @@ body {
 }
 
 .card:after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;

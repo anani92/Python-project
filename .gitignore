@@ -27,3 +27,4 @@ var/
 *.egg
 # Installer logs
 pip-log.txt
+*.env
