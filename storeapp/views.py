@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from storeapp.models import Customer, Profile_picture, Seller, Product, Product_category, Order
 from storeapp.models import Seller
 import bcrypt
@@ -158,6 +157,7 @@ def view_product(request, id):
     product = Product.objects.get(id=id)
     context = {
         'product': product,
+        'cart': Cart(request)
 
     }
     return render(request, 'store/product.html', context)
@@ -236,7 +236,6 @@ def add_profile_picture(request):
     increase, decrease Items and calculate the order 
 """
 
-@login_required(login_url="/login_customer")
 def add_to_cart(request, id):
     quantity = request.POST.get('quantity')
     cart = Cart(request)
@@ -246,7 +245,6 @@ def add_to_cart(request, id):
     return redirect(request.path)
 
 
-@login_required(login_url="/login_customer")
 def item_clear(request, id):
     cart = request.session
     product = Product.objects.get(id=id)
@@ -254,36 +252,28 @@ def item_clear(request, id):
     return redirect("cart")
 
 
-@login_required(login_url="/login_customer")
-def item_increment(request, id):
+def update_cart(request):
     cart = Cart(request)
-    product = Product.objects.get(id=id)
-    cart.cart.get(product.id)['quantity'] -= 1
-    return redirect("cart")
+    quantity = request.post.get(quantity)
+    product = Product.POST.get(id=request.POST.get('product_id'))
 
 
-@login_required(login_url="/login_customer")
-def item_decrement(request, id):
-    cart = Cart(request)
-    product = Product.objects.get(id=id)
-    cart.cart.get(product.id)['quantity'] -= 1
-    return redirect("cart")
 
-
-@login_required(login_url="/login_customer")
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
     return redirect("/cart")
 
 
-# @login_required(login_url="/login/login")
 def show_cart(request):
     cart = Cart(request)
+    customer_id = request.session['customer_id']
+    customer = Customer.objects.get(id=customer_id)
     context = {
-        'cart': cart.cart,
+        'cart': cart,
         'total': cart.get_total_price(),
         'items_in_cart': len(cart),
+        'customer': customer
     }
     return render(request, 'store/cart.html', context)
 

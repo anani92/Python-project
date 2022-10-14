@@ -108,14 +108,14 @@ class Profile_picture(models.Model):
         super().save(*args, **kwargs)
         if self.seller_picture:
            seller_picture = seller_picture.open(self.seller_picture.path)
-           if seller_picture.height > 1500 or seller_picture.width > 1500:
-              output_size = (1500, 1500)
+           if seller_picture.height > 1000 or seller_picture.width > 1000:
+              output_size = (1000, 1000)
               seller_picture.thumbnail(output_size)
               seller_picture.save(self.image1.path)
         if self.customer_picture:
            customer_picture = customer_picture.open(self.customer_picture.path)
-           if customer_picture.height > 1500 or customer_picture.width > 1500:
-              output_size = (1500, 1500)
+           if customer_picture.height > 1000 or customer_picture.width > 1000:
+              output_size = (1000, 1000)
               customer_picture.thumbnail(output_size)
               customer_picture.save(self.customer_picture.path)
 

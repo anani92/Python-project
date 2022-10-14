@@ -23,13 +23,17 @@
 <div class="-md d-flex bg-light rounded container col-10 mb-5 flex-wrap">
   {% for product in seller.product.all%}
   <div class="card col-2 m-4" style="min-width: 190px">
-    {% if item.image%}
-    <img src="{{ item.image.url }}" class="card-img-top" alt="{{item.name}}" />
-    {{ item.image.url }} {%else%}
+    {% if product.image%}
+    <img
+      src="{{ product.image.url }}"
+      class="card-img-top"
+      alt="{{item.name}}"
+    />
+    {%else%}
     <img
       src="{% static 'store/imgs/default_product.png' %}"
       class="card-img-top"
-      alt="{{item.name}}"
+      alt="{{product.name}}"
     />
     {%endif%}
     <div class="card-body text-center">
