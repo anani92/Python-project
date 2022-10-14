@@ -21,6 +21,7 @@ urlpatterns = [
      path('add_profile_picture', views.add_profile_picture),
      # ========= cart =========
      path('cart', views.show_cart),
+     path('add_to_cart', views.add_profile_picture),
      path('update_cart',views.update_cart),
      path('cart_item_clear/<int:id>/', views.item_clear),
      path('cart_cart_clear/', views.cart_clear),

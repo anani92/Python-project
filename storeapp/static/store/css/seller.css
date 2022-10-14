@@ -86,8 +86,11 @@ body {
 
 input[type="file"] {
   display: none;
+  cursor: pointer;
 }
-
+i {
+  cursor: pointer;
+}
 .custom-file-upload {
   border: 1px solid #ced4da;
   display: inline-block;

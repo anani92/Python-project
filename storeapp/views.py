@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from storeapp.models import Customer, Profile_picture, Seller, Product, Product_category, Order
+from storeapp.models import Customer, Seller, Product, Product_category, Order
 from storeapp.models import Seller
 import bcrypt
 from utils.views import Cart
@@ -11,6 +11,7 @@ def index(request):
 
 
 def home(request):
+    print(request.session)
     context = {}
     if 'seller_id' in request.session:
         seller = Seller.objects.get(id=request.session['seller_id'])
@@ -38,6 +39,13 @@ def home(request):
     return render(request, 'store/home.html', context)
 
 
+def view_customer_login(request):
+    return render(request, 'login/login.html')
+
+
+def view_seller_login(request):
+    return render(request, 'login/seller_signup.html')
+
 def create_customer(request):
     errors = Customer.objects.validate_user(request)
     if len(errors) > 0:
@@ -62,15 +70,8 @@ def create_customer(request):
     )
     customer.save()
     request.session['customer_id'] = customer.id
+    request.session.modified = True 
     return redirect('/')
-
-
-def view_customer_login(request):
-    return render(request, 'login/login.html')
-
-
-def view_seller_login(request):
-    return render(request, 'login/seller_signup.html')
 
 
 def login_customer(request):
@@ -82,8 +83,8 @@ def login_customer(request):
         return redirect('/login_customer')
     email = request.POST.get('email')
     customer = Customer.objects.get(email=email)
-    request.session['cart'] = {}
     request.session['customer_id'] = customer.id
+    request.session.modified = True 
     return redirect('/')
 
 
@@ -97,6 +98,8 @@ def login_seller(request):
     email = request.POST.get('email')
     seller = Seller.objects.get(email=email)
     request.session['seller_id'] = seller.id
+    request.session.modified = True 
+
     return redirect('/seller')
 
 
@@ -124,6 +127,7 @@ def create_seller(request):
     )
     new_seller.save()
     request.session['seller_id'] = new_seller.id
+    request.session.modified = True 
     return redirect('/seller')
 
 
@@ -205,32 +209,29 @@ def customer_profile(request):
 
 
 def seller_profile(request):
-    seller = Seller.objects.get(id=request.session['seller_id'])
     if 'seller_id' in request.session:
-        context = {
-            'seller': seller,
-            'categories': Product_category.objects.all()
-        }
+        seller = Seller.objects.get(id=request.session['seller_id'])
+        context= {
+                'seller': seller,
+                'categories': Product_category.objects.all()
+            }
         return render(request, 'store/seller.html', context)
     else:
         return redirect('/login_seller')
 
+
+
+
 def add_profile_picture(request):
-    if request.POST.get('seller_image'):
+    if request.FILES.get('seller_image'):
         seller = Seller.objects.get(id=request.session['seller_id'])
-        seller_pic = Profile_picture.objects.create(
-            seller_picture=request.FILE.get('seller_image')
-        )
-        seller_pic.save()
-        seller.seller_picture = seller_pic
-    elif request.POST.get('customer_image'):
-        customer = Customer.objects.get(id=request.session['customer_id'])
-        customer_pic = Profile_picture.objects.create(
-            customer_picture=request.FILE['customer_image']
-        )
-        customer_pic.save()
-        customer.seller_picture = customer_pic
+        seller.picture= request.FILES.get('seller_image')
+        seller.save()
+        print(seller.picture.url)
+    
     return redirect(request.META.get('HTTP_REFERER'))
+
+
 
 """ cart functionality for adding items clearing the cart,
     increase, decrease Items and calculate the order 

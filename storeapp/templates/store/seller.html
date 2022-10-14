@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Best Seller</title>
+    <title>Meta Market</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'store\css\seller.css' %}" />
     <link
@@ -122,26 +122,25 @@
             >
               <div class="container text-center">
                 <img
-                  src="{% static 'store/imgs/profile.png' %}"
+                  src="{{seller.picture.url}}"
                   class="rounded-circle account-img"
                   id="profile_pic"
                 />
               </div>
-
               <form
                 action="add_profile_picture"
                 method="post"
                 enctype="multipart/form-data"
                 class="form-group"
+                id="seller_img_form"
               >
                 {% csrf_token %}
 
                 <label for="seller_img" class="label d-block">
                   <i class="fa-solid fa-camera" style="font-size: 1.75rem">
-                    <input type="file" id="seller_img" class="w-25" />
+                    <input type="file" id="seller_img" name="seller_image" />
                   </i>
                 </label>
-                <button class="btn-success">Add profile picture</button>
               </form>
             </div>
             <div class="text-center mt-3">
@@ -224,7 +223,7 @@
             >Image:</label
           >
           <label class="custom-file-upload form_label">
-            <input type="file" name="image" />
+            <input type="file" name="image" id="img_upload" />
             <i class="fa fa-cloud-upload"></i>Click here tou upload image of the
             product.
           </label>
@@ -265,31 +264,15 @@
           alt="{{item.name}}"
         />
         {%endif%}
-        <div class="card-body text-center">
+        <div class="card-body text-center d-flex flex-column">
           <h5 class="card-title text-center .text-nowrap">{{item.name}}</h5>
           <h5 class="card-title text-center .text-nowrap">{{item.price}}</h5>
-          <form
-            action="/add_to_cart"
-            method="POST"
-            class="form d-flex flex-column"
-          >
-            {%csrf_token%}
-            <input
-              type="number"
-              class="form-control-range"
-              name="quantity"
-              placeholder="quantity"
-              min="1"
-              value="1"
-            />
-            <input
-              type="hidden"
-              name="product_id"
-              value="{{item.id}}"
-              placeholder="0"
-            />
-            <input class="btn btn-warning" type="submit" value="buy" />
-          </form>
+
+          <h5>{{item.quantity}}</h5>
+          <input type="hidden" name="product_id" value="placeholder" ="0" />
+          <a action="/view_product/{{item.id}}">
+            <button class="btn btn-warning">View</button>
+          </a>
         </div>
       </div>
       {%endfor%}
@@ -304,7 +287,11 @@
       </div>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    {% load static %}
+    <script
+      type="text/javascript"
+      src="{% static 'store/js/seller_photo.js' %}"
+    ></script>
     <script
       src="https://kit.fontawesome.com/27d8b168ea.js"
       crossorigin="anonymous"

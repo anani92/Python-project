@@ -91,6 +91,7 @@ class Seller(models.Model):
     name = models.CharField(max_length=55)
     mobile = models.IntegerField()
     email = models.CharField(max_length=95)
+    picture = models.ImageField(upload_to='media/',null=True, blank=True)
     description = models.TextField()
     city = models.CharField(max_length=55)
     password = models.CharField(max_length=80)
@@ -98,26 +99,6 @@ class Seller(models.Model):
     updated_at = models.DateField(auto_now_add=True)
     objects = User_Manager()
 
-
-class Profile_picture(models.Model):
-    seller_picture = models.ImageField(upload_to='media/',null=True, blank=True)
-    seller = models.ForeignKey(Customer, related_name='profile_picture', on_delete=models.CASCADE)
-    seller = models.ForeignKey(Seller, related_name='profile_picture', on_delete=models.CASCADE)
-    customer_picture = models.ImageField(upload_to='media/', null=True, blank=True)
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.seller_picture:
-           seller_picture = seller_picture.open(self.seller_picture.path)
-           if seller_picture.height > 1000 or seller_picture.width > 1000:
-              output_size = (1000, 1000)
-              seller_picture.thumbnail(output_size)
-              seller_picture.save(self.image1.path)
-        if self.customer_picture:
-           customer_picture = customer_picture.open(self.customer_picture.path)
-           if customer_picture.height > 1000 or customer_picture.width > 1000:
-              output_size = (1000, 1000)
-              customer_picture.thumbnail(output_size)
-              customer_picture.save(self.customer_picture.path)
 
 
 class Top_sellers(models.Model):
