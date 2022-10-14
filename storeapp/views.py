@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from storeapp.models import Customer, Profile_picture, Seller, Product, Product_category, Order
 from storeapp.models import Seller
 import bcrypt
@@ -127,7 +128,6 @@ def create_seller(request):
     return redirect('/seller')
 
 
-# @login_required
 def create_product(request):
     seller_id = request.session['seller_id']
     seller = Seller.objects.get(id=seller_id)
@@ -232,7 +232,11 @@ def add_profile_picture(request):
         customer.seller_picture = customer_pic
     return redirect(request.META.get('HTTP_REFERER'))
 
-# @login_required(login_url="/login/login")
+""" cart functionality for adding items clearing the cart,
+    increase, decrease Items and calculate the order 
+"""
+
+@login_required(login_url="/login_customer")
 def add_to_cart(request, id):
     quantity = request.POST.get('quantity')
     cart = Cart(request)
@@ -242,7 +246,7 @@ def add_to_cart(request, id):
     return redirect(request.path)
 
 
-# @login_required(login_url="/login/login")
+@login_required(login_url="/login_customer")
 def item_clear(request, id):
     cart = request.session
     product = Product.objects.get(id=id)
@@ -250,7 +254,7 @@ def item_clear(request, id):
     return redirect("cart")
 
 
-# @login_required(login_url="/login/login")
+@login_required(login_url="/login_customer")
 def item_increment(request, id):
     cart = Cart(request)
     product = Product.objects.get(id=id)
@@ -258,7 +262,7 @@ def item_increment(request, id):
     return redirect("cart")
 
 
-# @login_required(login_url="/login/login")
+@login_required(login_url="/login_customer")
 def item_decrement(request, id):
     cart = Cart(request)
     product = Product.objects.get(id=id)
@@ -266,7 +270,7 @@ def item_decrement(request, id):
     return redirect("cart")
 
 
-# @login_required(login_url="/login/login")
+@login_required(login_url="/login_customer")
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
